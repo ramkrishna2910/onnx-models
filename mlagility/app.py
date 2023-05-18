@@ -8,10 +8,48 @@ from dash import html, dcc
 import dash_bootstrap_components as dbc
 from dash import dash_table
 from dash.dependencies import Input, Output, State
-
+from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
 import pkg_resources
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP, "/assets/css/style.css"], suppress_callback_exceptions=True)
+app.index_string = """
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Import Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <!-- Import the FontAwesome library -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+        {%metas%}
+        <title>{%title%}</title>
+        {%favicon%}
+        {%css%}
+    </head>
+    <body>
+        {%app_entry%}
+        <footer>
+            {%config%}
+            {%scripts%}
+            {%renderer%}
+        </footer>
+    </body>
+</html>
+"""
+
+
+def get_public_blob_url(account_name, container_name, blob_name):
+    return f"https://{account_name}.blob.core.windows.net/{container_name}/{blob_name}"
+
+# Read the connection string from an environment variable
+connection_string = os.getenv("AZURE_S_C_S")
+container_name = "onnx-models"
+account_name = "onnxtrial"
+
+blob_service_client = BlobServiceClient.from_connection_string(connection_string)
+container_client = blob_service_client.get_container_client(container_name)
+
+blobs_list = container_client.list_blobs()
+onnx_models = [(blob.name, get_public_blob_url(account_name, container_name, blob.name)) for blob in blobs_list]
 
 python_files_directory = pkg_resources.resource_filename('mlagility_models', '')
 github_lfs_url = 'https://github.com/onnx/models/blob/main'
@@ -26,10 +64,10 @@ def fetch_files_by_extension(directory, extension):
 
     return matched_files
 
-onnx_models = fetch_files_by_extension(onnx_model_directory, ".onnx")
+# onnx_models = fetch_files_by_extension(onnx_model_directory, ".onnx")
 python_files = fetch_files_by_extension(python_files_directory, ".py")
 
-def onnx_card(model_name):
+def onnx_card(model_name, model_url):
     model_id = model_name.replace(".", "_")
     # Dummy data for now, you can replace these with actual data from your source
     opset = "Opset: 12"
@@ -46,13 +84,13 @@ def onnx_card(model_name):
                     html.P(author, className="card-text mb-1"),
                     html.P(use_case, className="card-text mb-1"),
                     html.P(downloads, className="card-text mb-1"),
-                    dbc.Button(
-                        [
-                            html.I(className="fa fa-arrow-down"),
-                        ],
+                    html.A(
+                        html.I(className="fas fa-arrow-down"),  # Using a down arrow icon instead of text
                         id=f"{model_id}_download",
-                        className="btn btn-primary position-absolute",
+                        className="btn btn-primary btn-sm position-absolute",
                         style={"bottom": "10px", "right": "10px"},
+                        download=model_name,
+                        href=""  # Will be populated by the callback
                     )
                 ],
                 style={"position": "relative"}
@@ -60,6 +98,7 @@ def onnx_card(model_name):
         ],
         style={"width": "18rem", "margin": "10px"},
     )
+
 
 def create_filter_panel(identifier):
     return dbc.Card(
@@ -111,7 +150,7 @@ app.layout = html.Div([
                     ], width=2),
                     dbc.Col([
                         dbc.Row([
-                            onnx_card(model) for model in onnx_models
+                            onnx_card(model_name, model_url) for model_name, model_url in onnx_models
                         ]),
                     ], width=10)
                 ]),
@@ -178,19 +217,15 @@ def update_code_viewer(selected_rows, table_data):
 
 
 # Download button callback for ONNX models
-for model in onnx_models:
-    model_id = model.replace(".", "_")
+for model_name, model_url in onnx_models:
+    model_id = model_name.replace(".", "_")
     @app.callback(
         Output(f"{model_id}_download", "href"),
         Input(f"{model_id}_download", "n_clicks"),
     )
-    def download_onnx_model(n_clicks, model_name=model):
+    def download_onnx_model(n_clicks, model_url=model_url):
         if n_clicks:
-            file_path = os.path.join(onnx_model_directory, model_name)
-            response = requests.get(github_lfs_url + file_path)
-            b64 = base64.b64encode(BytesIO(response.content).read()).decode()
-            href = f'data:application/octet-stream;base64,{b64}'
-            return href
+            return model_url  # Simply return the model URL
         return ''
 
 if __name__ == "__main__":
