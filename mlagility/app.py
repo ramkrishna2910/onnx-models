@@ -40,7 +40,8 @@ app.index_string = """
 def get_public_blob_url(account_name, container_name, blob_name):
     return f"https://{account_name}.blob.core.windows.net/{container_name}/{blob_name}"
 
-# Read the connection string from an environment variable
+# Read the connection string from an environment variable. Contact @ramkrishna2910 for demo.
+# Once this website is live, connection string will be handled by Azure managed services
 connection_string = os.getenv("AZURE_S_C_S")
 container_name = "onnx-models"
 account_name = "onnxtrial"
@@ -51,9 +52,8 @@ container_client = blob_service_client.get_container_client(container_name)
 blobs_list = container_client.list_blobs()
 onnx_models = [(blob.name, get_public_blob_url(account_name, container_name, blob.name)) for blob in blobs_list]
 
+
 python_files_directory = pkg_resources.resource_filename('mlagility_models', '')
-github_lfs_url = 'https://github.com/onnx/models/blob/main'
-onnx_model_directory = '/net/home/rsivakumar/onnx_models/image_classification/'
 
 def fetch_files_by_extension(directory, extension):
     matched_files = []
@@ -64,7 +64,6 @@ def fetch_files_by_extension(directory, extension):
 
     return matched_files
 
-# onnx_models = fetch_files_by_extension(onnx_model_directory, ".onnx")
 python_files = fetch_files_by_extension(python_files_directory, ".py")
 
 def onnx_card(model_name, model_url):
@@ -99,18 +98,49 @@ def onnx_card(model_name, model_url):
         style={"width": "18rem", "margin": "10px"},
     )
 
-
 def create_filter_panel(identifier):
     return dbc.Card(
-        dbc.Checklist(
-            options=[
-                {"label": "Option 1", "value": 1},
-                {"label": "Option 2", "value": 2},
-                {"label": "Option 3", "value": 3},
-            ],
-            id=f"filter_checklist_{identifier}",
-            inline=True,
-        ),
+        [
+            dbc.Tabs(
+                [
+                    dbc.Tab(
+                        dbc.Checklist(
+                            options=[
+                                {"label": "Vision", "value": 1},
+                                {"label": "Natural Language Processing", "value": 2},
+                                {"label": "Audio", "value": 3},
+                                {"label": "Tabular", "value": 4},
+                                {"label": "Reinforcement Learning", "value": 5},
+                                {"label": "MultiModal", "value": 6},
+                                {"label": "Generative AI", "value": 7},
+                                {"label": "Graph Machine Learning", "value": 8},
+                            ],
+                            id=f"filter_checklist_tasks_{identifier}",
+                            inline=True,
+                        ),
+                        label="Tasks",
+                    ),
+                    dbc.Tab(
+                        dbc.Checklist(
+                            options=[
+                                {"label": "Convolutional Neural Network (CNN)", "value": 1},
+                                {"label": "Recurrent Neural Network (RNN)", "value": 2},
+                                {"label": "Long Short-Term Memory (LSTM)", "value": 3},
+                                {"label": "Transformer", "value": 4},
+                                {"label": "Generative Adversarial Network (GAN)", "value": 5},
+                                {"label": "Autoencoder", "value": 6},
+                                {"label": "Graph Neural Networks (GNN)", "value": 7},
+                            ],
+                            id=f"filter_checklist_architectures_{identifier}",
+                            inline=True,
+                        ),
+                        label="Model Architectures",
+                    ),
+                ],
+                className="nav-tabs-custom",
+                style={"display": "flex"},
+            )
+        ],
         className="filter-panel",
     )
 
