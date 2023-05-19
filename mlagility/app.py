@@ -5,6 +5,7 @@ from io import BytesIO
 import pandas as pd
 import dash
 from dash import html, dcc
+import dash_ace
 import dash_bootstrap_components as dbc
 from dash import dash_table
 from dash.dependencies import Input, Output, State
@@ -209,7 +210,7 @@ app.layout = html.Div([
             html.Div(className="container-fluid", children=[
                 dbc.Row([
                     dbc.Col([
-                        html.H3("Filters"),
+                        html.H4("Filters"),
                         create_filter_panel("all_others")
                     ], width=3),
                     dbc.Col([
@@ -233,11 +234,14 @@ app.layout = html.Div([
                             selected_rows=[],
                         ),
                     ], width=3),
-                    dbc.Col([
+                        dbc.Col([
                         html.H3("Code Viewer"),
-                        dcc.Textarea(
-                            id="code_viewer",
-                            style={"width": "100%", "height": "40vh"},
+                        dash_ace.DashAceEditor(
+                            id='code_viewer',
+                            mode='python',
+                            theme='monokai',
+                            value='',
+                            style={"width": "100%", "height": "40vh", "fontFamily": "Courier New, monospace"},
                         ),
                     ], width=6),
                 ]),

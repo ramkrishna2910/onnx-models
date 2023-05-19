@@ -3,6 +3,7 @@ mlagility
 dash
 dash-html-components
 dash-core-components
+dash_ace
 plotly
 requests
 pandas
