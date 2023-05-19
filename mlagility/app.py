@@ -126,10 +126,9 @@ def create_filter_panel(identifier):
                                 {"label": "Convolutional Neural Network (CNN)", "value": 1},
                                 {"label": "Recurrent Neural Network (RNN)", "value": 2},
                                 {"label": "Long Short-Term Memory (LSTM)", "value": 3},
-                                {"label": "Transformer", "value": 4},
+                                {"label": "Transformers", "value": 4},
                                 {"label": "Generative Adversarial Network (GAN)", "value": 5},
-                                {"label": "Autoencoder", "value": 6},
-                                {"label": "Graph Neural Networks (GNN)", "value": 7},
+                                {"label": "Graph Neural Networks (GNN)", "value": 6},
                             ],
                             id=f"filter_checklist_architectures_{identifier}",
                             inline=True,
@@ -139,10 +138,30 @@ def create_filter_panel(identifier):
                 ],
                 className="nav-tabs-custom",
                 style={"display": "flex"},
-            )
+            ),
+            dbc.Row(
+                [
+                    dbc.Col(
+                        [
+                            dbc.Label("Parameter count"),
+                            dcc.Slider(
+                                id=f"parameter_count_slider_{identifier}",
+                                min=0,
+                                max=100,
+                                value=50,
+                                marks={i: str(i) for i in range(0, 101, 50)},
+                                tooltip={"always_visible": False, "placement": "bottom"},
+                            ),
+                        ],
+                        width={"size": 60, "offset": 0},
+                    )
+                ]
+            ),
         ],
         className="filter-panel",
     )
+
+
 
 app.layout = html.Div([
     dbc.NavbarSimple(
@@ -177,7 +196,7 @@ app.layout = html.Div([
                     dbc.Col([
                         html.H3("Filters"),
                         create_filter_panel("onnx")
-                    ], width=2),
+                    ], width=3),
                     dbc.Col([
                         dbc.Row([
                             onnx_card(model_name, model_url) for model_name, model_url in onnx_models
