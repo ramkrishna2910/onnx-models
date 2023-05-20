@@ -117,25 +117,25 @@ def create_filter_panel(identifier):
                                 {"label": "Graph Machine Learning", "value": 8},
                             ],
                             id=f"filter_checklist_tasks_{identifier}",
-                            inline=True,
+                            inline=False,
                         ),
                         label="Tasks",
                     ),
-                    dbc.Tab(
-                        dbc.Checklist(
-                            options=[
-                                {"label": "Convolutional Neural Network (CNN)", "value": 1},
-                                {"label": "Recurrent Neural Network (RNN)", "value": 2},
-                                {"label": "Long Short-Term Memory (LSTM)", "value": 3},
-                                {"label": "Transformers", "value": 4},
-                                {"label": "Generative Adversarial Network (GAN)", "value": 5},
-                                {"label": "Graph Neural Networks (GNN)", "value": 6},
-                            ],
-                            id=f"filter_checklist_architectures_{identifier}",
-                            inline=True,
-                        ),
-                        label="Model Architectures",
-                    ),
+                    # dbc.Tab(
+                    #     dbc.Checklist(
+                    #         options=[
+                    #             {"label": "Convolutional Neural Network (CNN)", "value": 1},
+                    #             {"label": "Recurrent Neural Network (RNN)", "value": 2},
+                    #             {"label": "Long Short-Term Memory (LSTM)", "value": 3},
+                    #             {"label": "Transformers", "value": 4},
+                    #             {"label": "Generative Adversarial Network (GAN)", "value": 5},
+                    #             {"label": "Graph Neural Networks (GNN)", "value": 6},
+                    #         ],
+                    #         id=f"filter_checklist_architectures_{identifier}",
+                    #         inline=True,
+                    #     ),
+                    #     label="Model Architectures",
+                    # ),
                 ],
                 className="nav-tabs-custom",
                 style={"display": "flex"},
@@ -202,7 +202,7 @@ app.layout = html.Div([
                         dbc.Row([
                             onnx_card(model_name, model_url) for model_name, model_url in onnx_models
                         ]),
-                    ], width=10)
+                    ], width=9)
                 ]),
             ]),
         ]),
@@ -241,7 +241,17 @@ app.layout = html.Div([
                             mode='python',
                             theme='monokai',
                             value='',
-                            style={"width": "100%", "height": "40vh", "fontFamily": "Courier New, monospace"},
+                            style={"width": "100%", "height": "50vh", "fontFamily": "Menlo, monospace", "lineHeight": "1.4"},
+                            readOnly=True,
+                        ),
+                        html.H3("Steps to export to ONNX"),
+                        dash_ace.DashAceEditor(
+                            id='export_steps',
+                            mode='python',
+                            theme='monokai',
+                            value='',
+                            style={"width": "100%", "height": "20vh", "fontFamily": "Menlo, monospace", "lineHeight": "1.4"},
+                            readOnly=True,
                         ),
                     ], width=6),
                 ]),
@@ -264,6 +274,17 @@ def update_code_viewer(selected_rows, table_data):
             with open(file_path, "r") as file:
                 code = file.read()
             return code
+    return ""
+
+@app.callback(
+    Output("export_steps", "value"),
+    Input("file_table", "selected_rows"),
+    State("file_table", "data")
+)
+def update_export_steps(selected_rows, table_data):
+    if selected_rows:
+        file_name = table_data[selected_rows[0]]["file"]
+        return f"benchit {file_name} --export-only"
     return ""
 
 
