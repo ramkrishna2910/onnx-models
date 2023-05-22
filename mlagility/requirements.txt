@@ -10,3 +10,4 @@ pandas
 dash_bootstrap_components
 dash-extensions
 azure-storage-blob
+pyyaml

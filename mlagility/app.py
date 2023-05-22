@@ -4,6 +4,7 @@ import base64
 from io import BytesIO
 import pandas as pd
 import dash
+import yaml
 from dash import html, dcc
 import dash_ace
 import dash_bootstrap_components as dbc
@@ -67,30 +68,37 @@ def fetch_files_by_extension(directory, extension):
 
 python_files = fetch_files_by_extension(python_files_directory, ".py")
 
+    # Load the yaml file
+with open('model-metadata.yaml') as f:
+    data = yaml.safe_load(f)
+
 def onnx_card(model_name, model_url):
     model_id = model_name.replace(".", "_")
-    # Dummy data for now, you can replace these with actual data from your source
-    opset = "Opset: 12"
-    author = "Author: John Doe"
-    use_case = "Use case: Image classification"
-    downloads = "Downloads: 1500"
+    display_name = model_name.replace(".onnx", "")
+    use_case = data[model_name]['task']
+    opset = data[model_name]['opset']
+    description = data[model_name]['description']
+
+    info_id = f"{model_id}_info"
 
     return dbc.Card(
         [
-            dbc.CardHeader(model_name),
+            dbc.CardHeader([
+                html.Div(display_name, className="float-left"),  # Float the model name to the left
+                dbc.Button("i", id=info_id, color="link", className="float-right info-circle")  # Float the button to the right
+            ]),
+            dbc.Tooltip(description, target=info_id),
             dbc.CardBody(
                 [
-                    html.P(opset, className="card-text mb-1"),
-                    html.P(author, className="card-text mb-1"),
                     html.P(use_case, className="card-text mb-1"),
-                    html.P(downloads, className="card-text mb-1"),
+                    html.P(f"Opset: {opset}", className="card-text mb-1"),
                     html.A(
-                        html.I(className="fas fa-arrow-down"),  # Using a down arrow icon instead of text
+                        html.I(className="fas fa-arrow-down"),
                         id=f"{model_id}_download",
                         className="btn btn-primary btn-sm position-absolute",
                         style={"bottom": "10px", "right": "10px"},
                         download=model_name,
-                        href=""  # Will be populated by the callback
+                        href=""
                     )
                 ],
                 style={"position": "relative"}
@@ -294,9 +302,6 @@ def update_export_steps(selected_rows, table_data):
         file_name = table_data[selected_rows[0]]["file"]
         return f"benchit {file_name} --export-only"
     return ""
-
-
-
 
 # Download button callback for ONNX models
 for model_name, model_url in onnx_models:

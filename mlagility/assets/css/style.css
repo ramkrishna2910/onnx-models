@@ -10,6 +10,14 @@ body {
     border-bottom: 1px solid #e5e5e5;
 }
 
+.navbar-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+  
 .navbar-brand,
 .navbar-title,
 .navbar-subtitle {
@@ -72,4 +80,34 @@ body {
 .btn-primary:hover {
     background-color: #3e93d9;
     border-color: #3e93d9;
+}
+
+.filter-button {
+    border: 1px solid #d6d8db;
+    background-color: #f9f9f9;
+    color: #333333;
+    margin-right: 5px;
+}
+
+.filter-button:focus,
+.filter-button.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+    box-shadow: none;
+}
+
+.filter-button-selected {
+    background-color: #007bff !important;
+    color: white !important;
+}
+
+.info-circle {
+    border: 1px solid;
+    border-radius: 50%;
+    padding: 2px;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    line-height: 18px;
 }

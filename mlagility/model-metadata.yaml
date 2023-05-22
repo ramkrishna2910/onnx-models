@@ -1,0 +1,24 @@
+densenet-9.onnx:
+  task: "Image Classification"
+  opset: 19
+  description: "Description for densenet-9.onnx"
+efficientnet-lite4-11-int8.onnx:
+  task: "Image Classification"
+  opset: 19
+  description: "Description for efficientnet-lite4-11-int8.onnx"
+googlenet-3.onnx:
+  task: "Image Classification"
+  opset: 19
+  description: "Description for googlenet-3.onnx"
+inception-v2-9.onnx:
+  task: "Image Classification"
+  opset: 19
+  description: "Description for inception-v2-9.onnx"
+mobilenetv2-7.onnx:
+  task: "Image Classification"
+  opset: 19
+  description: "Description for mobilenetv2-7.onnx"
+ssd-10.onnx:
+  task: "Image Classification"
+  opset: 19
+  description: "Description for ssd-10.onnx"
