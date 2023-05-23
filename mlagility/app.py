@@ -167,20 +167,20 @@ app.layout = html.Div([
     dbc.NavbarSimple(
         children=[
             dbc.NavbarBrand(
-                html.Img(src="/assets/img/onnx-logo.png", height="50px"),
-                className="navbar-brand mr-2"
+                html.Img(src="/assets/img/onnx-logo.png", height="75px"),
+                className=""
             ),
             html.Div(
                 [
-                    html.H1("ONNX Model Zoo", className="navbar-title"),
+                    html.H1("ONNX Model Zoo", className=""),
                     html.H6("Powered by MLAgility", className="navbar-subtitle"),
                 ],
-                className="navbar-center",
+                className="mx-auto",
             ),
         ],
         brand=None,
         color="white",
-        className="navbar-custom",
+        className="d-flex justify-content-center",
     ),
     dcc.Tabs(
         id='tabs',
@@ -370,10 +370,11 @@ def update_onnx_cards(filter_values, search_value):
 )
 def update_file_table(search_value):
     if search_value is None or search_value == '':
-        return [{"file": file} for file in python_files]
+        return [{"file": os.path.join(os.path.basename(os.path.dirname(file)), os.path.basename(file))} for file in python_files]
     else:
         searched_files = [file for file in python_files if search_value.lower() in file.lower()]
-        return [{"file": file} for file in searched_files]
+        return [{"file": os.path.join(os.path.basename(os.path.dirname(file)), os.path.basename(file))} for file in searched_files]
+
 
 if __name__ == "__main__":
     app.run_server(debug=True, port=8051)

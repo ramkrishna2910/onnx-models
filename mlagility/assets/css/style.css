@@ -5,8 +5,14 @@ body {
     margin: 0px;
 }
 
-.navbar-custom {
+/* .navbar-custom {
+    display: flex;
     background-color: white;
+    background-image: url('assets/img/onnx-background.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    justify-content: center;
+    align-items: center;
     border-bottom: 0px solid #e5e5e5;
 }
 
@@ -18,22 +24,41 @@ body {
     height: 100%;
   }
   
-.navbar-brand,
-.navbar-title,
-.navbar-subtitle {
-    color: #4b4b4b !important;
-}
+/* .navbar-brand, */
 
-.navbar-brand img {
+/* .navbar-brand {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: bold;
+    margin-right: 2rem;
+  }
+.navbar-title {
+    font-size: 36px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 0;
+  }
+ */ 
+  .navbar-subtitle {
+    font-size: 20px;
+    color: #272626;
+    text-align: center;
+    margin-top: 0;
+  }  
+/* .navbar-subtitle {
+    color: #4b4b4b !important;
+} */
+
+/* .navbar-brand img {
     margin-right: 10px;
 }
 
 .navbar-brand .fa {
     margin-right: 5px;
-}
+} */
 
 .container {
-    max-width: 1000px;
+    max-width: 500px;
     margin: 0 auto;
     padding: 40px 0;
 }
@@ -117,7 +142,8 @@ body {
     justify-content: center;
     border-bottom: none;
     margin-top: 20px;
-    width: 500px;
+    margin-bottom: 20px;
+    /* width: 500px; */
 }
 
 .custom-tab {
