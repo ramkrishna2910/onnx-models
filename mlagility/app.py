@@ -328,14 +328,23 @@ for model_name, model_url in onnx_models:
 
 @app.callback(
     Output("card_container", "children"),
-    Input("filter_checklist_tasks_onnx", "value")
+    [Input("filter_checklist_tasks_onnx", "value"),
+     Input("search_bar", "value")]
 )
-def update_onnx_cards(filter_values):
+def update_onnx_cards(filter_values, search_value):
     if filter_values is None or len(filter_values) == 0:  # added check for empty list
-        card_components = [onnx_card(model_name, model_url) for model_name, model_url in onnx_models]
+        if search_value is None or search_value == '':
+            card_components = [onnx_card(model_name, model_url) for model_name, model_url in onnx_models]
+        else:
+            searched_onnx_models = [(model_name, model_url) for model_name, model_url in onnx_models if search_value.lower() in model_name.lower()]
+            card_components = [onnx_card(model_name, model_url) for model_name, model_url in searched_onnx_models]
     else:
         filtered_onnx_models = [(model_name, model_url) for model_name, model_url in onnx_models if task_to_value(data[model_name]['task']) in filter_values]
-        card_components = [onnx_card(model_name, model_url) for model_name, model_url in filtered_onnx_models]
+        if search_value is None or search_value == '':
+            card_components = [onnx_card(model_name, model_url) for model_name, model_url in filtered_onnx_models]
+        else:
+            searched_onnx_models = [(model_name, model_url) for model_name, model_url in filtered_onnx_models if search_value.lower() in model_name.lower()]
+            card_components = [onnx_card(model_name, model_url) for model_name, model_url in searched_onnx_models]
 
     grid = dbc.Row(
         [
