@@ -107,6 +107,29 @@ def onnx_card(model_name, model_url):
         style={"width": "18rem", "margin": "10px"},
     )
 
+# Grid of cards
+grid = dbc.Row(
+    [
+        dbc.Col(onnx_card(model_name, model_url), lg=4, md=6, xs=12) 
+        for model_name, model_url in onnx_models
+    ],
+    className="row-cols-1 row-cols-md-2 row-cols-lg-3"
+)
+
+def task_to_value(task):
+    task_value_mapping = {
+        "Vision": 1,
+        "Natural Language Processing": 2,
+        "Audio": 3,
+        "Tabular": 4,
+        "Reinforcement Learning": 5,
+        "MultiModal": 6,
+        "Generative AI": 7,
+        "Graph Machine Learning": 8,
+    }
+    return task_value_mapping.get(task, None)
+
+
 def create_filter_panel(identifier):
     return dbc.Card(
         [
@@ -148,24 +171,24 @@ def create_filter_panel(identifier):
                 className="nav-tabs-custom",
                 style={"display": "flex"},
             ),
-            dbc.Row(
-                [
-                    dbc.Col(
-                        [
-                            dbc.Label("Parameter count"),
-                            dcc.Slider(
-                                id=f"parameter_count_slider_{identifier}",
-                                min=0,
-                                max=100,
-                                value=50,
-                                marks={i: str(i) for i in range(0, 101, 50)},
-                                tooltip={"always_visible": False, "placement": "bottom"},
-                            ),
-                        ],
-                        width={"size": 60, "offset": 0},
-                    )
-                ]
-            ),
+            # dbc.Row(
+            #     [
+            #         dbc.Col(
+            #             [
+            #                 dbc.Label("Parameter count"),
+            #                 dcc.Slider(
+            #                     id=f"parameter_count_slider_{identifier}",
+            #                     min=0,
+            #                     max=100,
+            #                     value=50,
+            #                     marks={i: str(i) for i in range(0, 101, 50)},
+            #                     tooltip={"always_visible": False, "placement": "bottom"},
+            #                 ),
+            #             ],
+            #             width={"size": 60, "offset": 0},
+            #         )
+            #     ]
+            # ),
         ],
         className="filter-panel",
     )
@@ -207,9 +230,7 @@ app.layout = html.Div([
                         create_filter_panel("onnx")
                     ], width=3),
                     dbc.Col([
-                        dbc.Row([
-                            onnx_card(model_name, model_url) for model_name, model_url in onnx_models
-                        ]),
+                        html.Div(id="card_container", children=grid),
                     ], width=9)
                 ]),
             ]),
@@ -318,6 +339,29 @@ for model_name, model_url in onnx_models:
         if n_clicks:
             return model_url  # Simply return the model URL
         return ''
+
+@app.callback(
+    Output("card_container", "children"),
+    Input("filter_checklist_tasks_onnx", "value")
+)
+def update_onnx_cards(filter_values):
+    if filter_values is None or len(filter_values) == 0:  # added check for empty list
+        card_components = [onnx_card(model_name, model_url) for model_name, model_url in onnx_models]
+    else:
+        filtered_onnx_models = [(model_name, model_url) for model_name, model_url in onnx_models if task_to_value(data[model_name]['task']) in filter_values]
+        card_components = [onnx_card(model_name, model_url) for model_name, model_url in filtered_onnx_models]
+
+    grid = dbc.Row(
+        [
+            dbc.Col(card, lg=4, md=6, xs=12) 
+            for card in card_components
+        ],
+        className="row-cols-1 row-cols-md-2 row-cols-lg-3"
+    )
+
+    return grid
+
+
 
 if __name__ == "__main__":
     app.run_server(debug=True, port=8051)
