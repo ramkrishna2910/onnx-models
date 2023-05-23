@@ -7,7 +7,7 @@ body {
 
 .navbar-custom {
     background-color: white;
-    border-bottom: 1px solid #e5e5e5;
+    border-bottom: 0px solid #e5e5e5;
 }
 
 .navbar-center {
@@ -110,4 +110,32 @@ body {
     height: 20px;
     text-align: center;
     line-height: 18px;
+}
+
+.custom-tabs {
+    display: flex;
+    justify-content: center;
+    border-bottom: none;
+    margin-top: 20px;
+    width: 500px;
+}
+
+.custom-tab {
+    border: 1px solid #007BFF;
+    border-radius: 12px;
+    color: #007BFF;
+    margin-right: 10px;
+    padding: 10px;
+}
+
+.custom-tab:hover {
+    color: black;
+    background-color: #007BFF;
+    transition: 0.3s;
+}
+
+.custom-tab--selected {
+    background-color: #007BFF;
+    color: #007BFF;
+    font-weight: bold;
 }

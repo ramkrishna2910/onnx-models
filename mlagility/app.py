@@ -156,7 +156,7 @@ def create_filter_panel(identifier):
                     ),
                 ],
                 className="nav-tabs-custom",
-                style={"display": "flex"},
+                style={"display": "flex",},
             )
         ],
         className="filter-panel p-3",
@@ -182,92 +182,110 @@ app.layout = html.Div([
         color="white",
         className="navbar-custom",
     ),
-    dcc.Tabs([
-        dcc.Tab(label="ONNX models", children=[
-            html.Div(className="container-fluid", children=[
-                dcc.Input(
-                    id="search_bar",
-                    type="text",
-                    placeholder="Search...",
-                    style={"width": "100%", "marginBottom": "10px"},
-                    className="search-bar"
-                ),
-                dbc.Row([
-                    dbc.Col([
-                        html.H3("Filters"),
-                        create_filter_panel("onnx")
-                    ], width=3),
-                    dbc.Col([
-                        html.Div(id="card_container", children=grid),
-                    ], width=9)
-                ]),
-            ]),
-        ]),
-        dcc.Tab(label="All others", children=[
-            html.Div(className="container-fluid", children=[
-                dbc.Row([
-                    dbc.Col([
-                        html.H4("Filters"),
-                        create_filter_panel("all_others")
-                    ], width=3),
-                    dbc.Col([
-                        html.H3("Python Files"),
-                        dash_table.DataTable(
-                            id="file_table",
-                            columns=[{"name": "Files", "id": "file"}],
-                            data=[{"file": file} for file in python_files],
-                            style_cell={
-                                'whiteSpace': 'normal',
-                                'height': 'auto',
-                                'textAlign': 'left'
-                            },
-                            style_table={'overflowX': 'auto'},
-                            style_header={
-                                'backgroundColor': 'rgb(230, 230, 230)',
-                                'fontWeight': 'bold'
-                            },
-                            page_size=10,
-                            row_selectable="single",
-                            selected_rows=[],
+    dcc.Tabs(
+        id='tabs',
+        value='tab-1',
+        children=[
+            dcc.Tab(
+                label='ONNX models',
+                value='tab-1',
+                className='custom-tab',
+                selected_className='custom-tab--selected',
+                children=[
+                    html.Div(className="container-fluid", children=[
+                        dcc.Input(
+                            id="search_bar",
+                            type="text",
+                            placeholder="Search...",
+                            style={"width": "100%", "marginBottom": "20px"},
+                            className="search-bar"
                         ),
-                    ], width=3),
-                        dbc.Col([
-                        html.H3("Code Viewer"),
-                        dash_ace.DashAceEditor(
-                            id='code_viewer',
-                            mode='python',
-                            theme='monokai',
-                            value='',
-                            wrapEnabled=True,
-                            showPrintMargin=False,
-                            style={"width": "100%", 
-                                   "height": "50vh", 
-                                   "fontFamily": "Menlo, monospace", 
-                                   "lineHeight": "1.4",
-                                   "borderRadius": "10px",},
-                            readOnly=True,
-                        ),
-                        html.H3("Steps to export to ONNX"),
-                        dash_ace.DashAceEditor(
-                            id='export_steps',
-                            mode='python',
-                            theme='monokai',
-                            value='',
-                            wrapEnabled=True,
-                            showPrintMargin=False,
-                            style={"width": "100%", 
-                                   "height": "20vh", 
-                                   "fontFamily": "Menlo, monospace", 
-                                   "lineHeight": "1.4",
-                                   "borderRadius": "10px",},
-                            readOnly=True,
-                        ),
-                    ], width=6),
-                ]),
-            ]),
-        ]),
-    ]),
+                        dbc.Row([
+                            dbc.Col([
+                                html.H3("Filters"),
+                                create_filter_panel("onnx")
+                            ], width=3),
+                            dbc.Col([
+                                html.Div(id="card_container", children=grid),
+                            ], width=9)
+                        ]),
+                    ]),
+                ],
+            ),
+            dcc.Tab(
+                label='All others',
+                value='tab-2',
+                className='custom-tab',
+                selected_className='custom-tab--selected',
+                children=[
+                    html.Div(className="container-fluid", children=[
+                        dbc.Row([
+                            dbc.Col([
+                                html.H4("Filters"),
+                                create_filter_panel("all_others")
+                            ], width=3),
+                            dbc.Col([
+                                html.H3("Python Files"),
+                                dash_table.DataTable(
+                                    id="file_table",
+                                    columns=[{"name": "Files", "id": "file"}],
+                                    data=[{"file": file} for file in python_files],
+                                    style_cell={
+                                        'whiteSpace': 'normal',
+                                        'height': 'auto',
+                                        'textAlign': 'left'
+                                    },
+                                    style_table={'overflowX': 'auto'},
+                                    style_header={
+                                        'backgroundColor': 'rgb(230, 230, 230)',
+                                        'fontWeight': 'bold'
+                                    },
+                                    page_size=10,
+                                    row_selectable="single",
+                                    selected_rows=[],
+                                ),
+                            ], width=3),
+                            dbc.Col([
+                                html.H3("Code Viewer"),
+                                dash_ace.DashAceEditor(
+                                    id='code_viewer',
+                                    mode='python',
+                                    theme='monokai',
+                                    value='',
+                                    wrapEnabled=True,
+                                    showPrintMargin=False,
+                                    style={"width": "100%",
+                                           "height": "50vh",
+                                           "fontFamily": "Menlo, monospace",
+                                           "lineHeight": "1.4",
+                                           "borderRadius": "10px", },
+                                    readOnly=True,
+                                ),
+                                html.H3("Steps to export to ONNX"),
+                                dash_ace.DashAceEditor(
+                                    id='export_steps',
+                                    mode='python',
+                                    theme='monokai',
+                                    value='',
+                                    wrapEnabled=True,
+                                    showPrintMargin=False,
+                                    style={"width": "100%",
+                                           "height": "20vh",
+                                           "fontFamily": "Menlo, monospace",
+                                           "lineHeight": "1.4",
+                                           "borderRadius": "10px", },
+                                    readOnly=True,
+                                ),
+                            ], width=6),
+                        ]),
+                    ]),
+                ]
+            ),
+        ],
+        className='custom-tabs'
+    ),
 ])
+
 
 
 @app.callback(
