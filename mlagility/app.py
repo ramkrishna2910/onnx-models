@@ -198,7 +198,7 @@ app.layout = html.Div([
                             type="text",
                             placeholder="Search...",
                             style={"width": "100%", "marginBottom": "20px"},
-                            className="search-bar"
+                            className="form-control form-control-lg rounded-pill"
                         ),
                         dbc.Row([
                             dbc.Col([
@@ -219,6 +219,13 @@ app.layout = html.Div([
                 selected_className='custom-tab--selected',
                 children=[
                     html.Div(className="container-fluid", children=[
+                            dcc.Input(
+                            id="search_bar_all_others",
+                            type="text",
+                            placeholder="Search...",
+                            style={"width": "100%", "marginBottom": "20px"},
+                            className="form-control form-control-lg rounded-pill"
+                        ),
                         dbc.Row([
                             dbc.Col([
                                 html.H4("Filters"),
@@ -357,6 +364,16 @@ def update_onnx_cards(filter_values, search_value):
     return grid
 
 
+@app.callback(
+    Output("file_table", "data"),
+    Input("search_bar_all_others", "value")
+)
+def update_file_table(search_value):
+    if search_value is None or search_value == '':
+        return [{"file": file} for file in python_files]
+    else:
+        searched_files = [file for file in python_files if search_value.lower() in file.lower()]
+        return [{"file": file} for file in searched_files]
 
 if __name__ == "__main__":
     app.run_server(debug=True, port=8051)
