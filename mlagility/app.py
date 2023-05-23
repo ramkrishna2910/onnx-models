@@ -149,50 +149,18 @@ def create_filter_panel(identifier):
                             ],
                             id=f"filter_checklist_tasks_{identifier}",
                             inline=False,
+                            className="my-2"
                         ),
                         label="Tasks",
+                        className="p-3"
                     ),
-                    # dbc.Tab(
-                    #     dbc.Checklist(
-                    #         options=[
-                    #             {"label": "Convolutional Neural Network (CNN)", "value": 1},
-                    #             {"label": "Recurrent Neural Network (RNN)", "value": 2},
-                    #             {"label": "Long Short-Term Memory (LSTM)", "value": 3},
-                    #             {"label": "Transformers", "value": 4},
-                    #             {"label": "Generative Adversarial Network (GAN)", "value": 5},
-                    #             {"label": "Graph Neural Networks (GNN)", "value": 6},
-                    #         ],
-                    #         id=f"filter_checklist_architectures_{identifier}",
-                    #         inline=True,
-                    #     ),
-                    #     label="Model Architectures",
-                    # ),
                 ],
                 className="nav-tabs-custom",
                 style={"display": "flex"},
-            ),
-            # dbc.Row(
-            #     [
-            #         dbc.Col(
-            #             [
-            #                 dbc.Label("Parameter count"),
-            #                 dcc.Slider(
-            #                     id=f"parameter_count_slider_{identifier}",
-            #                     min=0,
-            #                     max=100,
-            #                     value=50,
-            #                     marks={i: str(i) for i in range(0, 101, 50)},
-            #                     tooltip={"always_visible": False, "placement": "bottom"},
-            #                 ),
-            #             ],
-            #             width={"size": 60, "offset": 0},
-            #         )
-            #     ]
-            # ),
+            )
         ],
-        className="filter-panel",
+        className="filter-panel p-3",
     )
-
 
 
 app.layout = html.Div([
