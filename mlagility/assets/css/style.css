@@ -16,6 +16,10 @@ body {
     padding: 40px 0;
 }
 
+a.navbar-link {
+    text-decoration: none;
+}
+
 /* Style the search bar */
 .search-bar {
     display: flex;

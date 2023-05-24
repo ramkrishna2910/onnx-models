@@ -172,7 +172,10 @@ app.layout = html.Div([
             html.Div(
                 [
                     html.H1("ONNX Model Zoo", className=""),
-                    html.H6("Powered by MLAgility", className="navbar-subtitle"),
+                    html.H6([
+                        "Powered by ",
+                        dcc.Link("MLAgility", href="https://github.com/groq/mlagility", target="_blank", className="navbar-link")
+                    ], className="navbar-subtitle"),
                 ],
                 className="mx-auto",
             ),
