@@ -13,6 +13,19 @@ from dash.dependencies import Input, Output, State
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
 import pkg_resources
 
+#Global Constants
+
+# Read the connection string from an environment variable. Contact @ramkrishna2910 for demo.
+# Once this website is live, connection string will be handled by Azure managed services
+connection_string = os.getenv("AZURE_S_C_S")
+container_name = "onnx-models"
+account_name = "onnxtrial"
+blob_service_client = BlobServiceClient.from_connection_string(connection_string)
+container_client = blob_service_client.get_container_client(container_name)
+blobs_list = container_client.list_blobs()
+python_files_directory = pkg_resources.resource_filename('mlagility_models', '')
+
+# Create application instance
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP, "/assets/css/style.css"], suppress_callback_exceptions=True)
 app.index_string = """
 <!DOCTYPE html>
@@ -42,21 +55,6 @@ app.index_string = """
 def get_public_blob_url(account_name, container_name, blob_name):
     return f"https://{account_name}.blob.core.windows.net/{container_name}/{blob_name}"
 
-# Read the connection string from an environment variable. Contact @ramkrishna2910 for demo.
-# Once this website is live, connection string will be handled by Azure managed services
-connection_string = os.getenv("AZURE_S_C_S")
-container_name = "onnx-models"
-account_name = "onnxtrial"
-
-blob_service_client = BlobServiceClient.from_connection_string(connection_string)
-container_client = blob_service_client.get_container_client(container_name)
-
-blobs_list = container_client.list_blobs()
-onnx_models = [(blob.name, get_public_blob_url(account_name, container_name, blob.name)) for blob in blobs_list]
-
-
-python_files_directory = pkg_resources.resource_filename('mlagility_models', '')
-
 def fetch_files_by_extension(directory, extension):
     matched_files = []
     for root, dirs, files in os.walk(directory):
@@ -66,9 +64,10 @@ def fetch_files_by_extension(directory, extension):
 
     return matched_files
 
+onnx_models = [(blob.name, get_public_blob_url(account_name, container_name, blob.name)) for blob in blobs_list]
 python_files = fetch_files_by_extension(python_files_directory, ".py")
 
-    # Load the yaml file
+# Load the yaml file
 with open('model-metadata.yaml') as f:
     data = yaml.safe_load(f)
 
@@ -106,15 +105,6 @@ def onnx_card(model_name, model_url):
         ],
         style={"width": "18rem", "margin": "10px"},
     )
-
-# Grid of cards
-grid = dbc.Row(
-    [
-        dbc.Col(onnx_card(model_name, model_url), lg=4, md=6, xs=12) 
-        for model_name, model_url in onnx_models
-    ],
-    className="row-cols-1 row-cols-md-2 row-cols-lg-3"
-)
 
 def task_to_value(task):
     task_value_mapping = {
@@ -162,7 +152,16 @@ def create_filter_panel(identifier):
         className="filter-panel p-3",
     )
 
+# Grid of cards
+grid = dbc.Row(
+    [
+        dbc.Col(onnx_card(model_name, model_url), lg=4, md=6, xs=12) 
+        for model_name, model_url in onnx_models
+    ],
+    className="row-cols-1 row-cols-md-2 row-cols-lg-3"
+)
 
+# App Layout
 app.layout = html.Div([
     dbc.NavbarSimple(
         children=[
