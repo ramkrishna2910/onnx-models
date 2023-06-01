@@ -2,7 +2,6 @@ import os
 import requests
 import base64
 from io import BytesIO
-import pandas as pd
 import dash
 import yaml
 from dash import html, dcc
@@ -12,6 +11,7 @@ from dash import dash_table
 from dash.dependencies import Input, Output, State
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
 import pkg_resources
+import mlagility.api.report as report_api
 
 #Global Constants
 
@@ -55,17 +55,56 @@ app.index_string = """
 def get_public_blob_url(account_name, container_name, blob_name):
     return f"https://{account_name}.blob.core.windows.net/{container_name}/{blob_name}"
 
-def fetch_files_by_extension(directory, extension):
-    matched_files = []
-    for root, dirs, files in os.walk(directory):
-        for file in files:
-            if file.endswith(extension):
-                matched_files.append(os.path.join(root, file))
 
+
+
+def fetch_files_by_extension(directory: str, extension: str, report_csv: str, column: str) -> list:
+    """
+    Fetch files in a directory (and its subdirectories) with the specified extension 
+    if they are flagged as True in the report_csv.
+    
+    Args:
+        directory (str): The directory to search in.
+        extension (str): The extension of the files to look for.
+        report_csv (str): Path to a report.csv file.
+        column (str): Column name in the report.csv that indicates whether a file should be fetched.
+        
+    Returns:
+        list: A list of file paths in the directory that match the extension and are flagged in report_csv.
+    """
+
+    # Get a dictionary from the report_csv using the provided API
+    file_dict = report_api.get_dict(report_csv, column)
+    
+    # Filter the dictionary to only include keys that are set to True
+    file_dict = {k: v for k, v in file_dict.items() if v is True}
+    
+    # Create an empty list to store matched files
+    matched_files = []
+
+    # Use os.walk to check each file in the directory and its subdirectories
+    for dirpath, dirnames, files in os.walk(directory):
+        # Remove 'skip' from dirnames to avoid searching in these directories
+        if 'skip' in dirnames:
+            dirnames.remove('skip')
+
+        for file in files:
+            # Remove the extension from the file name
+            file_name_without_extension, file_extension = os.path.splitext(file)
+
+            # If the file ends with the extension and its name (without extension) is listed in the file_dict,
+            # add it to the list
+            if file_extension == extension and file_name_without_extension in file_dict:
+                matched_files.append(os.path.join(dirpath, file))
+            
     return matched_files
 
+
+
+
 onnx_models = [(blob.name, get_public_blob_url(account_name, container_name, blob.name)) for blob in blobs_list]
-python_files = fetch_files_by_extension(python_files_directory, ".py")
+python_files = fetch_files_by_extension(python_files_directory, ".py", "assets/data/2023-05-24.csv", "onnx_exported")
+
 
 # Load the yaml file
 with open('model-metadata.yaml') as f:
@@ -235,24 +274,35 @@ app.layout = html.Div([
                             ], width=3),
                             dbc.Col([
                                 html.H3("Python Files"),
-                                dash_table.DataTable(
-                                    id="file_table",
-                                    columns=[{"name": "Files", "id": "file"}],
-                                    data=[{"file": file} for file in python_files],
-                                    style_cell={
-                                        'whiteSpace': 'normal',
-                                        'height': 'auto',
-                                        'textAlign': 'left'
-                                    },
-                                    style_table={'overflowX': 'auto'},
-                                    style_header={
-                                        'backgroundColor': 'rgb(230, 230, 230)',
-                                        'fontWeight': 'bold'
-                                    },
-                                    page_size=10,
-                                    row_selectable="single",
-                                    selected_rows=[],
-                                ),
+                            dash_table.DataTable(
+                                id="file_table",
+                                columns=[{"name": "Files", "id": "file"}],
+                                data=[{"file": file} for file in python_files],
+                                style_cell={
+                                    'whiteSpace': 'normal',
+                                    'height': '60px',
+                                    'textAlign': 'left',
+                                    'textOverflow': 'ellipsis'
+                                },
+                                style_cell_conditional=[
+                                    {'if': {'column_id': 'file'},
+                                    'width': '100%'},
+                                ],
+                                style_table={
+                                    'overflowX': 'hidden', 
+                                    'overflowY': 'auto',
+                                    'maxHeight': '665px',  # Set the maximum height for the table, 
+                                                        # it will become scrollable if the data overflows this height
+                                },
+                                style_header={
+                                    'backgroundColor': 'rgb(230, 230, 230)',
+                                    'fontWeight': 'bold'
+                                },
+                                style_as_list_view=True,  # Gives a modern look
+                                page_size=10,
+                                row_selectable="single",
+                                selected_rows=[],
+                            ),
                             ], width=3),
                             dbc.Col([
                                 html.H3("Code Viewer"),
