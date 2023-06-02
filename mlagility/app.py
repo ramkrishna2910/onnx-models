@@ -8,7 +8,7 @@ from dash import html, dcc
 import dash_ace
 import dash_bootstrap_components as dbc
 from dash import dash_table
-from dash.dependencies import Input, Output, State
+from dash.dependencies import Input, Output, State, ALL
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
 import pkg_resources
 import mlagility.api.report as report_api
@@ -193,10 +193,7 @@ def create_filter_panel(identifier):
 
 import os
 
-def python_file_card(file_name):
-    # remove file extension from the id
-    file_id = os.path.splitext(file_name)[0]
-
+def python_file_card(file_name, index):
     return dbc.Card(
         [
             dbc.CardBody(
@@ -205,8 +202,7 @@ def python_file_card(file_name):
                     dbc.Button(
                         "View Source",
                         color="primary",
-                        id=f"{file_id}_download",
-                        # href=file_url,
+                        id={'type': 'dynamic-button', 'index': index},
                         external_link=True,
                         target="_blank",
                     ),
@@ -215,8 +211,6 @@ def python_file_card(file_name):
         ],
         className="mb-1",
     )
-
-
 
 # Grid of cards
 grid = dbc.Row(
@@ -229,10 +223,20 @@ grid = dbc.Row(
 
 grid_other_models = dbc.Row(
     [
-        dbc.Col(python_file_card(file_name), xs=12) 
-        for file_name in python_files
+        dbc.Col(python_file_card(file_name, index), xs=12)
+        for index, file_name in enumerate(python_files)
     ],
-    className="row-cols-1"
+    className="row-cols-1",
+)
+
+
+page_navigation = html.Div(
+    [
+        html.Button("Prev", id="prev_button", n_clicks=0, className="mr-2"),
+        html.Button("Next", id="next_button", n_clicks=0, className="mr-2"),
+        html.Div(id="page_number", children="Page: 1"),
+    ],
+    className="mt-2"
 )
 
 
@@ -311,6 +315,7 @@ app.layout = html.Div([
                             ], width=3),
                             dbc.Col([
                                 html.Div(id="card_container_all_others", children=grid_other_models),
+                                page_navigation,
                             ], width=3),
                             dbc.Col([
                                 html.H3("Code Viewer"),
@@ -386,6 +391,67 @@ def update_export_steps(*args):
         button_id = ctx.triggered[0]['prop_id'].split('.')[0]
         file_name = button_id.replace('_download', '') + '.py'  # add the extension back
         return f"benchit {file_name} --export-only"
+# import re
+# @app.callback(
+#     Output('code_viewer', 'value'),
+#     Output('export_steps', 'value'),
+#     Input({'type': 'dynamic-button', 'index': 'all'}, 'n_clicks'),
+#     State({'type': 'dynamic-button', 'index': 'all'}, 'id'),
+#     prevent_initial_call=True,
+# )
+# def update_code_viewer(n_clicks, ids):
+#     ctx = dash.callback_context
+#     if ctx.triggered:
+#         button_id = ctx.triggered[0]['prop_id']
+#         match = re.search(r"_download$", button_id)
+#         if match:
+#             index = button_id.split(".")[0].split("-")[-1]
+#             file_name = python_files[int(index)]
+#             file_path = os.path.join(python_files_directory, file_name)
+#             if os.path.isfile(file_path):
+#                 with open(file_path, "r") as file:
+#                     code = file.read()
+#                 return code, f"benchit {file_name} --export-only"
+#     return "", ""
+
+
+# @app.callback(
+#     [Output("card_container_all_others", "children"), Output("page_number", "children")],
+#     [Input("prev_button", "n_clicks"), Input("next_button", "n_clicks")],
+# )
+# def update_cards(prev_clicks, next_clicks):
+#     cards_per_page = 10
+#     current_page = max(next_clicks - prev_clicks, 0)  # Ensure the page number never goes below 0
+#     cards = []
+#     for file_name in python_files[current_page * cards_per_page : (current_page + 1) * cards_per_page]:
+#         cards.append(python_file_card(file_name))
+#     return cards, f"Page: {current_page + 1}"
+
+@app.callback(
+    [Output("card_container_all_others", "children"), Output("page_number", "children")],
+    [Input("prev_button", "n_clicks"), Input("next_button", "n_clicks"), Input("search_bar_all_others", "value")],
+)
+def update_cards(prev_clicks, next_clicks, search_value):
+    cards_per_page = 10
+    current_page = max(next_clicks - prev_clicks, 0)  # Ensure the page number never goes below 0
+
+    if search_value is None or search_value == '':
+        filtered_files = python_files
+    else:
+        filtered_files = [file_name for file_name in python_files if search_value.lower() in file_name.lower()]
+
+    paginated_files = filtered_files[current_page * cards_per_page: (current_page + 1) * cards_per_page]
+    card_components = [python_file_card(file_name, index) for index, file_name in enumerate(paginated_files)]
+
+    grid = dbc.Row(
+        [
+            dbc.Col(card, lg=4, md=6, xs=12)
+            for card in card_components
+        ],
+        className="row-cols-1"
+    )
+
+    return grid, f"Page: {current_page + 1}"
 
 
 # Download button callback for ONNX models
@@ -442,26 +508,6 @@ def update_file_table(search_value):
         searched_files = [file for file in python_files if search_value.lower() in file.lower()]
         return [{"file": os.path.join(os.path.basename(os.path.dirname(file)), os.path.basename(file))} for file in searched_files]
 
-@app.callback(
-    Output("card_container_all_others", "children"),
-    Input("search_bar_all_others", "value")
-)
-def update_other_model_cards(search_value):
-    if search_value is None or search_value == '':
-        card_components = [python_file_card(file_name) for file_name in python_files]
-    else:
-        searched_other_models = [(file_name) for file_name in python_files if search_value.lower() in file_name.lower()]
-        card_components = [python_file_card(file_name) for file_name in searched_other_models]
-
-    grid = dbc.Row(
-        [
-            dbc.Col(card, lg=4, md=6, xs=12) 
-            for card in card_components
-        ],
-        className="row-cols-1 row-cols-md-2 row-cols-lg-3"
-    )
-
-    return grid
 
 
 if __name__ == "__main__":
