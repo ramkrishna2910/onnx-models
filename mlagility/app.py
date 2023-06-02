@@ -359,60 +359,58 @@ app.layout = html.Div([
 ])
 
 
-
-@app.callback(
-    Output("code_viewer", "value"),
-    [Input(f"{os.path.splitext(file_name)[0]}_download", "n_clicks") for file_name in python_files]
-)
-def update_code_viewer(*args):
-    ctx = dash.callback_context
-    if not ctx.triggered:
-        return ""
-    else:
-        button_id = ctx.triggered[0]['prop_id'].split('.')[0]
-        file_name = button_id.replace('_download', '') + '.py'  # add the extension back
-        file_path = os.path.join(python_files_directory, file_name)
-        if os.path.isfile(file_path):
-            with open(file_path, "r") as file:
-                code = file.read()
-            return code
-    return ""
-
-
-@app.callback(
-    Output("export_steps", "value"),
-    [Input(f"{os.path.splitext(file_name)[0]}_download", "n_clicks") for file_name in python_files]
-)
-def update_export_steps(*args):
-    ctx = dash.callback_context
-    if not ctx.triggered:
-        return ""
-    else:
-        button_id = ctx.triggered[0]['prop_id'].split('.')[0]
-        file_name = button_id.replace('_download', '') + '.py'  # add the extension back
-        return f"benchit {file_name} --export-only"
-# import re
 # @app.callback(
-#     Output('code_viewer', 'value'),
-#     Output('export_steps', 'value'),
-#     Input({'type': 'dynamic-button', 'index': 'all'}, 'n_clicks'),
-#     State({'type': 'dynamic-button', 'index': 'all'}, 'id'),
-#     prevent_initial_call=True,
+#     Output("code_viewer", "value"),
+#     [Input(f"{os.path.splitext(file_name)[0]}_download", "n_clicks") for file_name in python_files]
 # )
-# def update_code_viewer(n_clicks, ids):
+# def update_code_viewer(*args):
 #     ctx = dash.callback_context
-#     if ctx.triggered:
-#         button_id = ctx.triggered[0]['prop_id']
-#         match = re.search(r"_download$", button_id)
-#         if match:
-#             index = button_id.split(".")[0].split("-")[-1]
-#             file_name = python_files[int(index)]
-#             file_path = os.path.join(python_files_directory, file_name)
-#             if os.path.isfile(file_path):
-#                 with open(file_path, "r") as file:
-#                     code = file.read()
-#                 return code, f"benchit {file_name} --export-only"
-#     return "", ""
+#     if not ctx.triggered:
+#         return ""
+#     else:
+#         button_id = ctx.triggered[0]['prop_id'].split('.')[0]
+#         file_name = button_id.replace('_download', '') + '.py'  # add the extension back
+#         file_path = os.path.join(python_files_directory, file_name)
+#         if os.path.isfile(file_path):
+#             with open(file_path, "r") as file:
+#                 code = file.read()
+#             return code
+#     return ""
+
+# @app.callback(
+#     Output("export_steps", "value"),
+#     [Input(f"{os.path.splitext(file_name)[0]}_download", "n_clicks") for file_name in python_files]
+# )
+# def update_export_steps(*args):
+#     ctx = dash.callback_context
+#     if not ctx.triggered:
+#         return ""
+#     else:
+#         button_id = ctx.triggered[0]['prop_id'].split('.')[0]
+#         file_name = button_id.replace('_download', '') + '.py'  # add the extension back
+#         return f"benchit {file_name} --export-only"
+import re
+@app.callback(
+    Output('code_viewer', 'value'),
+    Output('export_steps', 'value'),
+    Input({'type': 'dynamic-button', 'index': 'all'}, 'n_clicks'),
+    State({'type': 'dynamic-button', 'index': 'all'}, 'id'),
+    # prevent_initial_call=True,
+)
+def update_code_viewer(n_clicks, ids):
+    ctx = dash.callback_context
+    if ctx.triggered:
+        button_id = ctx.triggered[0]['prop_id']
+        match = re.search(r"_download$", button_id)
+        if match:
+            index = button_id.split(".")[0].split("-")[-1]
+            file_name = python_files[int(index)]
+            file_path = os.path.join(python_files_directory, file_name)
+            if os.path.isfile(file_path):
+                with open(file_path, "r") as file:
+                    code = file.read()
+                return code, f"benchit {file_name} --export-only"
+    return "", ""
 
 
 # @app.callback(
@@ -495,19 +493,6 @@ def update_onnx_cards(filter_values, search_value):
     )
 
     return grid
-
-
-@app.callback(
-    Output("file_table", "data"),
-    Input("search_bar_all_others", "value")
-)
-def update_file_table(search_value):
-    if search_value is None or search_value == '':
-        return [{"file": os.path.join(os.path.basename(os.path.dirname(file)), os.path.basename(file))} for file in python_files]
-    else:
-        searched_files = [file for file in python_files if search_value.lower() in file.lower()]
-        return [{"file": os.path.join(os.path.basename(os.path.dirname(file)), os.path.basename(file))} for file in searched_files]
-
 
 
 if __name__ == "__main__":
