@@ -191,6 +191,27 @@ def create_filter_panel(identifier):
         className="filter-panel p-3",
     )
 
+def python_file_card(file_name):
+    return dbc.Card(
+        [
+            dbc.CardBody(
+                [
+                    html.H5(file_name, className="card-title"),
+                    dbc.Button(
+                        "View Source",
+                        color="primary",
+                        id=f"{file_name}_download",
+                        # href=file_url,
+                        external_link=True,
+                        target="_blank",
+                    ),
+                ]
+            ),
+        ],
+        className="mb-1",
+    )
+
+
 # Grid of cards
 grid = dbc.Row(
     [
@@ -199,6 +220,16 @@ grid = dbc.Row(
     ],
     className="row-cols-1 row-cols-md-2 row-cols-lg-3"
 )
+
+grid_other_models = dbc.Row(
+    [
+        dbc.Col(python_file_card(file_name), xs=12) 
+        for file_name in python_files
+    ],
+    className="row-cols-1"
+)
+
+
 
 # App Layout
 app.layout = html.Div([
@@ -273,36 +304,7 @@ app.layout = html.Div([
                                 create_filter_panel("all_others")
                             ], width=3),
                             dbc.Col([
-                                html.H3("Python Files"),
-                            dash_table.DataTable(
-                                id="file_table",
-                                columns=[{"name": "Files", "id": "file"}],
-                                data=[{"file": file} for file in python_files],
-                                style_cell={
-                                    'whiteSpace': 'normal',
-                                    'height': '60px',
-                                    'textAlign': 'left',
-                                    'textOverflow': 'ellipsis'
-                                },
-                                style_cell_conditional=[
-                                    {'if': {'column_id': 'file'},
-                                    'width': '100%'},
-                                ],
-                                style_table={
-                                    'overflowX': 'hidden', 
-                                    'overflowY': 'auto',
-                                    'maxHeight': '665px',  # Set the maximum height for the table, 
-                                                        # it will become scrollable if the data overflows this height
-                                },
-                                style_header={
-                                    'backgroundColor': 'rgb(230, 230, 230)',
-                                    'fontWeight': 'bold'
-                                },
-                                style_as_list_view=True,  # Gives a modern look
-                                page_size=10,
-                                row_selectable="single",
-                                selected_rows=[],
-                            ),
+                                html.Div(id="card_container_all_others", children=grid_other_models),
                             ], width=3),
                             dbc.Col([
                                 html.H3("Code Viewer"),
@@ -426,6 +428,27 @@ def update_file_table(search_value):
     else:
         searched_files = [file for file in python_files if search_value.lower() in file.lower()]
         return [{"file": os.path.join(os.path.basename(os.path.dirname(file)), os.path.basename(file))} for file in searched_files]
+
+@app.callback(
+    Output("card_container_all_others", "children"),
+    Input("search_bar_all_others", "value")
+)
+def update_other_model_cards(search_value):
+    if search_value is None or search_value == '':
+        card_components = [python_file_card(file_name) for file_name in python_files]
+    else:
+        searched_other_models = [(file_name) for file_name in python_files if search_value.lower() in file_name.lower()]
+        card_components = [python_file_card(file_name) for file_name in searched_other_models]
+
+    grid = dbc.Row(
+        [
+            dbc.Col(card, lg=4, md=6, xs=12) 
+            for card in card_components
+        ],
+        className="row-cols-1 row-cols-md-2 row-cols-lg-3"
+    )
+
+    return grid
 
 
 if __name__ == "__main__":
