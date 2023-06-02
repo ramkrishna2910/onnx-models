@@ -191,7 +191,12 @@ def create_filter_panel(identifier):
         className="filter-panel p-3",
     )
 
+import os
+
 def python_file_card(file_name):
+    # remove file extension from the id
+    file_id = os.path.splitext(file_name)[0]
+
     return dbc.Card(
         [
             dbc.CardBody(
@@ -200,7 +205,7 @@ def python_file_card(file_name):
                     dbc.Button(
                         "View Source",
                         color="primary",
-                        id=f"{file_name}_download",
+                        id=f"{file_id}_download",
                         # href=file_url,
                         external_link=True,
                         target="_blank",
@@ -210,6 +215,7 @@ def python_file_card(file_name):
         ],
         className="mb-1",
     )
+
 
 
 # Grid of cards
@@ -351,12 +357,15 @@ app.layout = html.Div([
 
 @app.callback(
     Output("code_viewer", "value"),
-    Input("file_table", "selected_rows"),
-    State("file_table", "data")
+    [Input(f"{os.path.splitext(file_name)[0]}_download", "n_clicks") for file_name in python_files]
 )
-def update_code_viewer(selected_rows, table_data):
-    if selected_rows:
-        file_name = table_data[selected_rows[0]]["file"]
+def update_code_viewer(*args):
+    ctx = dash.callback_context
+    if not ctx.triggered:
+        return ""
+    else:
+        button_id = ctx.triggered[0]['prop_id'].split('.')[0]
+        file_name = button_id.replace('_download', '') + '.py'  # add the extension back
         file_path = os.path.join(python_files_directory, file_name)
         if os.path.isfile(file_path):
             with open(file_path, "r") as file:
@@ -364,16 +373,20 @@ def update_code_viewer(selected_rows, table_data):
             return code
     return ""
 
+
 @app.callback(
     Output("export_steps", "value"),
-    Input("file_table", "selected_rows"),
-    State("file_table", "data")
+    [Input(f"{os.path.splitext(file_name)[0]}_download", "n_clicks") for file_name in python_files]
 )
-def update_export_steps(selected_rows, table_data):
-    if selected_rows:
-        file_name = table_data[selected_rows[0]]["file"]
+def update_export_steps(*args):
+    ctx = dash.callback_context
+    if not ctx.triggered:
+        return ""
+    else:
+        button_id = ctx.triggered[0]['prop_id'].split('.')[0]
+        file_name = button_id.replace('_download', '') + '.py'  # add the extension back
         return f"benchit {file_name} --export-only"
-    return ""
+
 
 # Download button callback for ONNX models
 for model_name, model_url in onnx_models:
