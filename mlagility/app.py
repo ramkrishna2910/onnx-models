@@ -194,7 +194,7 @@ def create_filter_panel(identifier):
 import os
 
 def python_file_card(file_name, index):
-    return dbc.Card(
+    c = dbc.Card(
         [
             dbc.CardBody(
                 [
@@ -203,14 +203,16 @@ def python_file_card(file_name, index):
                         "View Source",
                         color="primary",
                         id={'type': 'dynamic-button', 'index': index},
-                        external_link=True,
-                        target="_blank",
+                        # external_link=True,
+                        # target="_blank",
                     ),
                 ]
             ),
         ],
         className="mb-1",
     )
+    print(c)
+    return c
 
 # Grid of cards
 grid = dbc.Row(
@@ -390,26 +392,27 @@ app.layout = html.Div([
 #         file_name = button_id.replace('_download', '') + '.py'  # add the extension back
 #         return f"benchit {file_name} --export-only"
 import re
+import json
 @app.callback(
     Output('code_viewer', 'value'),
     Output('export_steps', 'value'),
-    Input({'type': 'dynamic-button', 'index': 'all'}, 'n_clicks'),
-    State({'type': 'dynamic-button', 'index': 'all'}, 'id'),
-    # prevent_initial_call=True,
+    Input({'type': 'dynamic-button', 'index': dash.dependencies.ALL}, 'n_clicks'),
+    prevent_initial_call=True,
 )
-def update_code_viewer(n_clicks, ids):
+def update_code_viewer(n_clicks):
+    print("====")
     ctx = dash.callback_context
-    if ctx.triggered:
-        button_id = ctx.triggered[0]['prop_id']
-        match = re.search(r"_download$", button_id)
-        if match:
-            index = button_id.split(".")[0].split("-")[-1]
-            file_name = python_files[int(index)]
-            file_path = os.path.join(python_files_directory, file_name)
-            if os.path.isfile(file_path):
-                with open(file_path, "r") as file:
-                    code = file.read()
-                return code, f"benchit {file_name} --export-only"
+    if not ctx.triggered:
+        return dash.no_update, dash.no_update
+    else:
+        button_id = ctx.triggered[0]['prop_id'].split('.')[0]
+        index = json.loads(button_id)['index']
+        file_name = python_files[int(index)]
+        file_path = os.path.join(python_files_directory, file_name)
+        if os.path.isfile(file_path):
+            with open(file_path, "r") as file:
+                code = file.read()
+            return code, f"benchit {file_name} --export-only"
     return "", ""
 
 
