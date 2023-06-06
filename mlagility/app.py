@@ -193,7 +193,10 @@ def create_filter_panel(identifier):
 
 import os
 
-def python_file_card(file_name, index):
+import base64
+
+def python_file_card(file_name):
+    file_name_encoded = base64.b64encode(file_name.encode()).decode()  # encode the file_name as base64
     c = dbc.Card(
         [
             dbc.CardBody(
@@ -202,9 +205,7 @@ def python_file_card(file_name, index):
                     dbc.Button(
                         "View Source",
                         color="primary",
-                        id={'type': 'dynamic-button', 'index': index},
-                        # external_link=True,
-                        # target="_blank",
+                        id={'type': 'dynamic-button', 'index': file_name_encoded},
                     ),
                 ]
             ),
@@ -225,8 +226,8 @@ grid = dbc.Row(
 
 grid_other_models = dbc.Row(
     [
-        dbc.Col(python_file_card(file_name, index), xs=12)
-        for index, file_name in enumerate(python_files)
+        dbc.Col(python_file_card(file_name), xs=12)
+        for file_name in python_files
     ],
     className="row-cols-1",
 )
@@ -391,7 +392,6 @@ app.layout = html.Div([
 #         button_id = ctx.triggered[0]['prop_id'].split('.')[0]
 #         file_name = button_id.replace('_download', '') + '.py'  # add the extension back
 #         return f"benchit {file_name} --export-only"
-import re
 import json
 @app.callback(
     Output('code_viewer', 'value'),
@@ -400,14 +400,13 @@ import json
     prevent_initial_call=True,
 )
 def update_code_viewer(n_clicks):
-    print("====")
     ctx = dash.callback_context
     if not ctx.triggered:
         return dash.no_update, dash.no_update
     else:
         button_id = ctx.triggered[0]['prop_id'].split('.')[0]
-        index = json.loads(button_id)['index']
-        file_name = python_files[int(index)]
+        file_name_encoded = json.loads(button_id)['index']
+        file_name = base64.b64decode(file_name_encoded).decode()  # decode the file_name from base64
         file_path = os.path.join(python_files_directory, file_name)
         if os.path.isfile(file_path):
             with open(file_path, "r") as file:
@@ -442,7 +441,7 @@ def update_cards(prev_clicks, next_clicks, search_value):
         filtered_files = [file_name for file_name in python_files if search_value.lower() in file_name.lower()]
 
     paginated_files = filtered_files[current_page * cards_per_page: (current_page + 1) * cards_per_page]
-    card_components = [python_file_card(file_name, index) for index, file_name in enumerate(paginated_files)]
+    card_components = [python_file_card(file_name) for file_name in paginated_files]
 
     grid = dbc.Row(
         [
