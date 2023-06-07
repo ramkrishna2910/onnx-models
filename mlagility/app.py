@@ -1,5 +1,6 @@
 import os
 import requests
+import textwrap
 import base64
 from io import BytesIO
 import dash
@@ -13,8 +14,9 @@ from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
 import pkg_resources
 import mlagility.api.report as report_api
 import base64
-#Global Constants
+import json
 
+#Global Constants
 # Read the connection string from an environment variable. Contact @ramkrishna2910 for demo.
 # Once this website is live, connection string will be handled by Azure managed services
 connection_string = os.getenv("AZURE_S_C_S")
@@ -95,8 +97,6 @@ def fetch_files_by_extension(directory: str, extension: str, report_csv: str, co
                 matched_files.append(os.path.join(dirpath, file))
             
     return matched_files
-
-
 
 
 onnx_models = [(blob.name, get_public_blob_url(account_name, container_name, blob.name)) for blob in blobs_list]
@@ -190,21 +190,29 @@ def create_filter_panel(identifier):
 
 def python_file_card(file_name):
     file_name_encoded = base64.b64encode(file_name.encode()).decode()  # encode the file_name as base64
+    file_name_only = os.path.basename(file_name) 
+    use_case = "test"
     c = dbc.Card(
-        [
-            dbc.CardBody(
-                [
-                    html.H5(file_name, className="card-title"),
-                    dbc.Button(
-                        "View Source",
-                        color="primary",
-                        id={'type': 'dynamic-button', 'index': file_name_encoded},
-                    ),
-                ]
-            ),
-        ],
-        className="mb-1",
-    )
+            [
+                dbc.CardHeader(
+                    html.H6(file_name_only, className="mb-0", style={"font-weight": "bold"}), 
+                    className="bg-light text-dark", 
+                ),
+                dbc.CardBody(
+                    [
+                        html.P(use_case, className="card-text text-muted"),
+                        dbc.Button(
+                            "View Source",
+                            color="primary",
+                            size="sm",
+                            className="mt-1",
+                            id={'type': 'dynamic-button', 'index': file_name_encoded},
+                        ),
+                    ]
+                ),
+            ],
+            className="mb-3 shadow-sm",
+        )
     return c
 
 # Grid of cards
@@ -218,7 +226,7 @@ grid = dbc.Row(
 
 grid_other_models = dbc.Row(
     [
-        dbc.Col(python_file_card(file_name), xs=12)
+        dbc.Col(python_file_card(file_name), width=12)
         for file_name in python_files
     ],
     className="row-cols-1",
@@ -226,12 +234,13 @@ grid_other_models = dbc.Row(
 
 page_navigation = html.Div(
     [
-        html.Button("Prev", id="prev_button", n_clicks=0, className="mr-2"),
-        html.Button("Next", id="next_button", n_clicks=0, className="mr-2"),
+        dbc.Button("Prev", id="prev_button", n_clicks=0, className="mr-2 btn btn-primary btn-sm"),
+        dbc.Button("Next", id="next_button", n_clicks=0, className="mr-2 btn btn-primary btn-sm"),
         html.Div(id="page_number", children="Page: 1"),
     ],
     className="mt-2"
 )
+
 
 # App Layout
 app.layout = html.Div([
@@ -293,13 +302,17 @@ app.layout = html.Div([
                 selected_className='custom-tab--selected',
                 children=[
                     html.Div(className="container-fluid", children=[
-                            dcc.Input(
-                            id="search_bar_all_others",
-                            type="text",
-                            placeholder="Search...",
-                            style={"width": "100%", "marginBottom": "20px"},
-                            className="form-control form-control-lg rounded-pill"
-                        ),
+                        dbc.Row([
+                            dbc.Col([
+                                dcc.Input(
+                                    id="search_bar_all_others",
+                                    type="text",
+                                    placeholder="Search...",
+                                    style={"width": "100%", "marginBottom": "20px"},
+                                    className="form-control form-control-lg rounded-pill"
+                                ),
+                            ], width=12),
+                        ]),
                         dbc.Row([
                             dbc.Col([
                                 html.H4("Filters"),
@@ -308,7 +321,7 @@ app.layout = html.Div([
                             dbc.Col([
                                 html.Div(id="card_container_all_others", children=grid_other_models),
                                 page_navigation,
-                            ], width=3),
+                            ], width=4),
                             dbc.Col([
                                 html.H3("Code Viewer"),
                                 dash_ace.DashAceEditor(
@@ -318,11 +331,14 @@ app.layout = html.Div([
                                     value='',
                                     wrapEnabled=True,
                                     showPrintMargin=False,
-                                    style={"width": "100%",
-                                           "height": "50vh",
-                                           "fontFamily": "Menlo, monospace",
-                                           "lineHeight": "1.4",
-                                           "borderRadius": "10px", },
+                                    style={
+                                        "width": "100%",
+                                        "height": "85vh",
+                                        "fontFamily": "Menlo, monospace",
+                                        "lineHeight": "1.4",
+                                        "borderRadius": "10px",
+                                        "padding": "20px",
+                                    },
                                     readOnly=True,
                                 ),
                                 html.H3("Steps to export to ONNX"),
@@ -333,24 +349,26 @@ app.layout = html.Div([
                                     value='',
                                     wrapEnabled=True,
                                     showPrintMargin=False,
-                                    style={"width": "100%",
-                                           "height": "20vh",
-                                           "fontFamily": "Menlo, monospace",
-                                           "lineHeight": "1.4",
-                                           "borderRadius": "10px", },
+                                    style={
+                                        "width": "100%",
+                                        "height": "20vh",
+                                        "fontFamily": "Menlo, monospace",
+                                        "lineHeight": "1.4",
+                                        "borderRadius": "10px",
+                                        "padding": "20px",
+                                    },
                                     readOnly=True,
                                 ),
-                            ], width=6),
+                            ], width=5),
                         ]),
                     ]),
                 ]
-            ),
+            )
         ],
         className='custom-tabs'
     ),
 ])
 
-import json
 @app.callback(
     Output('code_viewer', 'value'),
     Output('export_steps', 'value'),
@@ -366,10 +384,21 @@ def update_code_viewer(n_clicks):
         file_name_encoded = json.loads(button_id)['index']
         file_name = base64.b64decode(file_name_encoded).decode()  # decode the file_name from base64
         file_path = os.path.join(python_files_directory, file_name)
+        file_name_with_parent = os.path.join(os.path.basename(os.path.dirname(file_path)), os.path.basename(file_path))
+
+        export_steps = textwrap.dedent(f"""\
+        # Create a conda env (recommended)
+        git clone https://github.com/groq/mlagility.git
+        pip install -e mlagility
+        pip install -r mlagility/models/requirements.txt
+        benchit mlagility/models/{file_name_with_parent} --export-only\
+        """)
+
+        
         if os.path.isfile(file_path):
             with open(file_path, "r") as file:
                 code = file.read()
-            return code, f"benchit {file_name} --export-only"
+            return code, export_steps
     return "", ""
 
 @app.callback(
@@ -390,7 +419,7 @@ def update_cards(prev_clicks, next_clicks, search_value):
 
     grid = dbc.Row(
         [
-            dbc.Col(card, lg=4, md=6, xs=12)
+            dbc.Col(card, xs=6)
             for card in card_components
         ],
         className="row-cols-1"
