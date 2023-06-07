@@ -12,7 +12,7 @@ from dash.dependencies import Input, Output, State, ALL
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
 import pkg_resources
 import mlagility.api.report as report_api
-
+import base64
 #Global Constants
 
 # Read the connection string from an environment variable. Contact @ramkrishna2910 for demo.
@@ -54,9 +54,6 @@ app.index_string = """
 
 def get_public_blob_url(account_name, container_name, blob_name):
     return f"https://{account_name}.blob.core.windows.net/{container_name}/{blob_name}"
-
-
-
 
 def fetch_files_by_extension(directory: str, extension: str, report_csv: str, column: str) -> list:
     """
@@ -191,10 +188,6 @@ def create_filter_panel(identifier):
         className="filter-panel p-3",
     )
 
-import os
-
-import base64
-
 def python_file_card(file_name):
     file_name_encoded = base64.b64encode(file_name.encode()).decode()  # encode the file_name as base64
     c = dbc.Card(
@@ -212,7 +205,6 @@ def python_file_card(file_name):
         ],
         className="mb-1",
     )
-    print(c)
     return c
 
 # Grid of cards
@@ -232,7 +224,6 @@ grid_other_models = dbc.Row(
     className="row-cols-1",
 )
 
-
 page_navigation = html.Div(
     [
         html.Button("Prev", id="prev_button", n_clicks=0, className="mr-2"),
@@ -241,8 +232,6 @@ page_navigation = html.Div(
     ],
     className="mt-2"
 )
-
-
 
 # App Layout
 app.layout = html.Div([
@@ -361,37 +350,6 @@ app.layout = html.Div([
     ),
 ])
 
-
-# @app.callback(
-#     Output("code_viewer", "value"),
-#     [Input(f"{os.path.splitext(file_name)[0]}_download", "n_clicks") for file_name in python_files]
-# )
-# def update_code_viewer(*args):
-#     ctx = dash.callback_context
-#     if not ctx.triggered:
-#         return ""
-#     else:
-#         button_id = ctx.triggered[0]['prop_id'].split('.')[0]
-#         file_name = button_id.replace('_download', '') + '.py'  # add the extension back
-#         file_path = os.path.join(python_files_directory, file_name)
-#         if os.path.isfile(file_path):
-#             with open(file_path, "r") as file:
-#                 code = file.read()
-#             return code
-#     return ""
-
-# @app.callback(
-#     Output("export_steps", "value"),
-#     [Input(f"{os.path.splitext(file_name)[0]}_download", "n_clicks") for file_name in python_files]
-# )
-# def update_export_steps(*args):
-#     ctx = dash.callback_context
-#     if not ctx.triggered:
-#         return ""
-#     else:
-#         button_id = ctx.triggered[0]['prop_id'].split('.')[0]
-#         file_name = button_id.replace('_download', '') + '.py'  # add the extension back
-#         return f"benchit {file_name} --export-only"
 import json
 @app.callback(
     Output('code_viewer', 'value'),
@@ -413,19 +371,6 @@ def update_code_viewer(n_clicks):
                 code = file.read()
             return code, f"benchit {file_name} --export-only"
     return "", ""
-
-
-# @app.callback(
-#     [Output("card_container_all_others", "children"), Output("page_number", "children")],
-#     [Input("prev_button", "n_clicks"), Input("next_button", "n_clicks")],
-# )
-# def update_cards(prev_clicks, next_clicks):
-#     cards_per_page = 10
-#     current_page = max(next_clicks - prev_clicks, 0)  # Ensure the page number never goes below 0
-#     cards = []
-#     for file_name in python_files[current_page * cards_per_page : (current_page + 1) * cards_per_page]:
-#         cards.append(python_file_card(file_name))
-#     return cards, f"Page: {current_page + 1}"
 
 @app.callback(
     [Output("card_container_all_others", "children"), Output("page_number", "children")],
@@ -495,7 +440,6 @@ def update_onnx_cards(filter_values, search_value):
     )
 
     return grid
-
 
 if __name__ == "__main__":
     app.run_server(debug=True, port=8051)
