@@ -1,9 +1,9 @@
 densenet-9.onnx:
-  task: "Vision"
+  task: "Computer Vision"
   opset: 19
   description: "Description for densenet-9.onnx"
 efficientnet-lite4-11-int8.onnx:
-  task: "Vision"
+  task: "Computer Vision"
   opset: 19
   description: "Description for efficientnet-lite4-11-int8.onnx"
 googlenet-3.onnx:
@@ -11,7 +11,7 @@ googlenet-3.onnx:
   opset: 19
   description: "Description for googlenet-3.onnx"
 inception-v2-9.onnx:
-  task: "Vision"
+  task: "Computer Vision"
   opset: 19
   description: "Description for inception-v2-9.onnx"
 mobilenetv2-7.onnx:
