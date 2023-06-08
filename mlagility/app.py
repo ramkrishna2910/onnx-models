@@ -341,7 +341,7 @@ app.layout = html.Div([
                                     showPrintMargin=False,
                                     style={
                                         "width": "100%",
-                                        # "height": "65vh",
+                                        "height": "50vh",
                                         "fontFamily": "Menlo, monospace",
                                         "lineHeight": "1.4",
                                         "borderRadius": "10px",
@@ -359,7 +359,7 @@ app.layout = html.Div([
                                     showPrintMargin=False,
                                     style={
                                         "width": "100%",
-                                        # "height": "15vh",
+                                        "height": "10vh",
                                         "fontFamily": "Menlo, monospace",
                                         "lineHeight": "1.4",
                                         "borderRadius": "10px",
@@ -421,15 +421,11 @@ def update_cards(prev_clicks, next_clicks, search_value, filter_values):
     current_page = max(next_clicks - prev_clicks, 0)
 
     if filter_values is None or len(filter_values) == 0:  # added check for empty list
-        print ("No")
         if search_value is None or search_value == '':
             filtered_files = python_files
         else:
             filtered_files = [file_name for file_name in python_files if search_value.lower() in file_name.lower()]
     else:
-        # for file_name in python_files:
-        #     a = task_to_value(matched_files_dict[file_name]['task'])
-        #     print(matched_files_dict[file_name]['task'])
         filtered_files = [file_name for file_name in python_files if task_to_value(matched_files_dict[file_name]['task'].replace('_', ' ')) in filter_values]
         if search_value is not None and search_value != '':
             filtered_files = [file_name for file_name in filtered_files if search_value.lower() in file_name.lower()]
@@ -477,7 +473,6 @@ def update_onnx_cards(filter_values, search_value):
         else:
             searched_onnx_models = [(model_name, model_url) for model_name, model_url in filtered_onnx_models if search_value.lower() in model_name.lower()]
             card_components = [onnx_card(model_name, model_url) for model_name, model_url in searched_onnx_models]
-    print(filter_values, search_value, model_name)
     grid = dbc.Row(
         [
             dbc.Col(card, lg=4, md=6, xs=12) 
