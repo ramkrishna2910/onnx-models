@@ -190,9 +190,9 @@ def create_filter_panel(identifier):
 
 def python_file_card(file_name):
     file_name_encoded = base64.b64encode(file_name.encode()).decode()  # encode the file_name as base64
-    file_name_only = os.path.basename(file_name) 
+    file_name_only = os.path.basename(file_name)
     use_case = "test"
-    c = dbc.Card(
+    card = dbc.Card(
             [
                 dbc.CardHeader(
                     html.H6(file_name_only, className="mb-0", style={"font-weight": "bold"}), 
@@ -200,20 +200,24 @@ def python_file_card(file_name):
                 ),
                 dbc.CardBody(
                     [
-                        html.P(use_case, className="card-text text-muted"),
-                        dbc.Button(
-                            "View Source",
-                            color="primary",
-                            size="sm",
-                            className="mt-1",
-                            id={'type': 'dynamic-button', 'index': file_name_encoded},
+                        html.P(use_case, className="card-text text-muted mb-auto"),
+                        html.Div(
+                            dbc.Button(
+                                "View Source",
+                                color="primary",
+                                size="sm",
+                                id={'type': 'dynamic-button', 'index': file_name_encoded},
+                            ),
+                            className="d-flex justify-content-end mt-auto",  # Bootstrap classes to push the button to the bottom and right
                         ),
-                    ]
+                    ],
+                    className="d-flex flex-column",  # This makes CardBody a flex container to enable alignment of children
                 ),
             ],
             className="mb-3 shadow-sm",
         )
-    return c
+    return card
+
 
 # Grid of cards
 grid = dbc.Row(
@@ -236,10 +240,14 @@ page_navigation = html.Div(
     [
         dbc.Button("Prev", id="prev_button", n_clicks=0, className="mr-2 btn btn-primary btn-sm"),
         dbc.Button("Next", id="next_button", n_clicks=0, className="mr-2 btn btn-primary btn-sm"),
-        html.Div(id="page_number", children="Page: 1"),
+        html.Div(
+            html.Div(id="page_number", children="Page: 1"),
+            style={"display": "flex", "justifyContent": "center", "width": "100%"}
+        )
     ],
     className="mt-2"
 )
+
 
 
 # App Layout
@@ -320,10 +328,10 @@ app.layout = html.Div([
                             ], width=3),
                             dbc.Col([
                                 html.Div(id="card_container_all_others", children=grid_other_models),
-                                page_navigation,
+                                html.Div(page_navigation, style={"display": "flex", "justifyContent": "center"}),
                             ], width=4),
                             dbc.Col([
-                                html.H3("Code Viewer"),
+                                html.H4("Code Viewer"),
                                 dash_ace.DashAceEditor(
                                     id='code_viewer',
                                     mode='python',
@@ -333,7 +341,7 @@ app.layout = html.Div([
                                     showPrintMargin=False,
                                     style={
                                         "width": "100%",
-                                        "height": "85vh",
+                                        # "height": "65vh",
                                         "fontFamily": "Menlo, monospace",
                                         "lineHeight": "1.4",
                                         "borderRadius": "10px",
@@ -341,7 +349,7 @@ app.layout = html.Div([
                                     },
                                     readOnly=True,
                                 ),
-                                html.H3("Steps to export to ONNX"),
+                                html.H4("Steps to export to ONNX"),
                                 dash_ace.DashAceEditor(
                                     id='export_steps',
                                     mode='python',
@@ -351,7 +359,7 @@ app.layout = html.Div([
                                     showPrintMargin=False,
                                     style={
                                         "width": "100%",
-                                        "height": "20vh",
+                                        # "height": "15vh",
                                         "fontFamily": "Menlo, monospace",
                                         "lineHeight": "1.4",
                                         "borderRadius": "10px",
@@ -387,7 +395,7 @@ def update_code_viewer(n_clicks):
         file_name_with_parent = os.path.join(os.path.basename(os.path.dirname(file_path)), os.path.basename(file_path))
 
         export_steps = textwrap.dedent(f"""\
-        # Create a conda env (recommended)
+        # Create a conda env with python=3.8 (recommended)
         git clone https://github.com/groq/mlagility.git
         pip install -e mlagility
         pip install -r mlagility/models/requirements.txt
@@ -469,6 +477,7 @@ def update_onnx_cards(filter_values, search_value):
     )
 
     return grid
+
 
 if __name__ == "__main__":
     app.run_server(debug=True, port=8051)

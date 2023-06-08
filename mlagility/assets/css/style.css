@@ -122,3 +122,29 @@ a.navbar-link {
     color: #0775ec;
     font-weight: bold;
 }
+
+
+
+.previous-button, .next-button {
+    background-color: #167ce2;
+    border: 1px solid #dee2e6;
+    color: #495057;
+    cursor: pointer;
+    margin: 0px;
+    padding: 0px;
+}
+
+.page-number {
+    border: none;
+    font-weight: bold;
+}
+
+.previous-button:hover, .next-button:hover {
+    background-color: #e2e6ea;
+}
+
+.previous-button:disabled, .next-button:disabled {
+    background-color: #f8f9fa;
+    color: #adb5bd;
+    cursor: not-allowed;
+}
