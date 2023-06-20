@@ -90,13 +90,13 @@ def fetch_files_by_extension(directory: str, extension: str, report_csv: str, co
 
         for file in files:
             file_name_without_extension, file_extension = os.path.splitext(file)
-
             if file_extension == extension and file_name_without_extension in file_dict:
                 matched_files_dict[os.path.join(dirpath, file)] = file_dict[file_name_without_extension]
 
     return matched_files_dict
 
 onnx_models = [(blob.name, get_public_blob_url(account_name, container_name, blob.name)) for blob in blobs_list]
+print(onnx_models)
 matched_files_dict = fetch_files_by_extension(python_files_directory, ".py", "assets/data/2023-05-24.csv", ["onnx_exported", "author", "task"])
 python_files = list(matched_files_dict.keys())
 
@@ -116,8 +116,8 @@ def onnx_card(model_name, model_url):
     return dbc.Card(
         [
             dbc.CardHeader([
-                html.Div(display_name, className="float-left"),  # Float the model name to the left
-                dbc.Button("i", id=info_id, color="link", className="float-right info-circle")  # Float the button to the right
+                html.Div(display_name, className="float-left"),
+                dbc.Button("i", id=info_id, color="link", className="float-right info-circle")
             ]),
             dbc.Tooltip(description, target=info_id),
             dbc.CardBody(
@@ -288,8 +288,8 @@ app.layout = html.Div([
                             id="search_bar",
                             type="text",
                             placeholder="Search...",
-                            style={"width": "100%", "marginBottom": "20px"},
-                            className="form-control form-control-lg rounded-pill"
+                            style={"width": "100%", "marginBottom": "20px", "borderRadius": "15px"},
+                            className="form-control form-control-lg"
                         ),
                         dbc.Row([
                             dbc.Col([
