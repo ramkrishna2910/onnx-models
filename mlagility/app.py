@@ -105,23 +105,22 @@ with open('model-metadata.yaml') as f:
     data = yaml.safe_load(f)
 
 def onnx_card(model_name, model_url):
-    # print(model_name, model_url)
     model_id = model_name.replace(".", "_")
     display_name = model_name.replace(".onnx", "")
     try:
         use_case = data[model_name]['task']
     except KeyError:
-        use_case = "No use case available" # or any other default value you'd like to use
+        use_case = "No use case available"
 
     try:
         opset = data[model_name]['opset']
     except KeyError:
-        opset = "No opset available" # or any other default value you'd like to use
+        opset = "No opset available"
 
     try:
         description = data[model_name]['description']
     except KeyError:
-        description = "No description available" # or any other default value you'd like to use
+        description = "No description available"
 
 
     info_id = f"{model_id}_info"
