@@ -10,22 +10,15 @@ import dash_ace
 import dash_bootstrap_components as dbc
 from dash import dash_table
 from dash.dependencies import Input, Output, State, ALL
-from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
 import pkg_resources
 import mlagility.api.report as report_api
 import base64
 import json
 from typing import List, Dict
+from pathlib import Path
+import subprocess
 
 #Global Constants
-# Read the connection string from an environment variable. Contact @ramkrishna2910 for demo.
-# Once this website is live, connection string will be handled by Azure managed services
-connection_string = os.getenv("AZURE_S_C_S")
-container_name = "onnx-models"
-account_name = "onnxtrial"
-blob_service_client = BlobServiceClient.from_connection_string(connection_string)
-container_client = blob_service_client.get_container_client(container_name)
-blobs_list = container_client.list_blobs()
 python_files_directory = pkg_resources.resource_filename('mlagility_models', '')
 
 # Create application instance
@@ -55,8 +48,16 @@ app.index_string = """
 """
 
 
-def get_public_blob_url(account_name, container_name, blob_name):
-    return f"https://{account_name}.blob.core.windows.net/{container_name}/{blob_name}"
+def get_onnx_files(repo_path):
+    # Use subprocess to run the git lfs ls-files command and get output
+    result = subprocess.run(['git', 'lfs', 'ls-files'], cwd=repo_path, stdout=subprocess.PIPE)
+
+    # Decode the output from bytes to string and split into lines
+    lines = result.stdout.decode('utf-8').split('\n')
+
+    # Filter lines to only include .onnx files and construct a tuple with filename and path for each file
+    onnx_files = [(Path(line.split(' ')[-1]).name, f"https://github.com/onnx/models/raw/main/{line.split(' ')[-1]}") for line in lines if Path(line.split(' ')[-1]).suffix == '.onnx']
+    return onnx_files
 
 import pandas as pd
 def get_dict(report_csv: str, columns: List[str]) -> Dict[str, Dict[str, str]]:
@@ -95,8 +96,7 @@ def fetch_files_by_extension(directory: str, extension: str, report_csv: str, co
 
     return matched_files_dict
 
-onnx_models = [(blob.name, get_public_blob_url(account_name, container_name, blob.name)) for blob in blobs_list]
-print(onnx_models)
+onnx_models = get_onnx_files("/net/home/rsivakumar/github/models")
 matched_files_dict = fetch_files_by_extension(python_files_directory, ".py", "assets/data/2023-05-24.csv", ["onnx_exported", "author", "task"])
 python_files = list(matched_files_dict.keys())
 
@@ -105,11 +105,24 @@ with open('model-metadata.yaml') as f:
     data = yaml.safe_load(f)
 
 def onnx_card(model_name, model_url):
+    # print(model_name, model_url)
     model_id = model_name.replace(".", "_")
     display_name = model_name.replace(".onnx", "")
-    use_case = data[model_name]['task']
-    opset = data[model_name]['opset']
-    description = data[model_name]['description']
+    try:
+        use_case = data[model_name]['task']
+    except KeyError:
+        use_case = "No use case available" # or any other default value you'd like to use
+
+    try:
+        opset = data[model_name]['opset']
+    except KeyError:
+        opset = "No opset available" # or any other default value you'd like to use
+
+    try:
+        description = data[model_name]['description']
+    except KeyError:
+        description = "No description available" # or any other default value you'd like to use
+
 
     info_id = f"{model_id}_info"
 
@@ -129,8 +142,8 @@ def onnx_card(model_name, model_url):
                         id=f"{model_id}_download",
                         className="btn btn-primary btn-sm position-absolute",
                         style={"bottom": "10px", "right": "10px"},
-                        download=model_name,
-                        href=""
+                        # download=model_name,
+                        href=model_url
                     )
                 ],
                 style={"position": "relative"}
@@ -316,8 +329,8 @@ app.layout = html.Div([
                                     id="search_bar_all_others",
                                     type="text",
                                     placeholder="Search...",
-                                    style={"width": "100%", "marginBottom": "20px"},
-                                    className="form-control form-control-lg rounded-pill"
+                                    style={"width": "100%", "marginBottom": "20px", "borderRadius": "15px"},
+                                    className="form-control form-control-lg"
                                 ),
                             ], width=12),
                         ]),
@@ -441,18 +454,6 @@ def update_cards(prev_clicks, next_clicks, search_value, filter_values):
     )
 
     return grid, f"Page: {current_page + 1}"
-
-# Download button callback for ONNX models
-for model_name, model_url in onnx_models:
-    model_id = model_name.replace(".", "_")
-    @app.callback(
-        Output(f"{model_id}_download", "href"),
-        Input(f"{model_id}_download", "n_clicks"),
-    )
-    def download_onnx_model(n_clicks, model_url=model_url):
-        if n_clicks:
-            return model_url  # Simply return the model URL
-        return ''
 
 @app.callback(
     Output("card_container", "children"),
