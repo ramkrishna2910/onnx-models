@@ -1,14 +1,11 @@
 import os
-import requests
 import textwrap
 import base64
-from io import BytesIO
 import dash
 import yaml
 from dash import html, dcc
 import dash_ace
 import dash_bootstrap_components as dbc
-from dash import dash_table
 from dash.dependencies import Input, Output, State, ALL
 import pkg_resources
 import mlagility.api.report as report_api
@@ -17,9 +14,6 @@ import json
 from typing import List, Dict
 from pathlib import Path
 import subprocess
-
-#Global Constants
-python_files_directory = pkg_resources.resource_filename('mlagility_models', '')
 
 # Create application instance
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP, "/assets/css/style.css"], suppress_callback_exceptions=True)
@@ -48,9 +42,9 @@ app.index_string = """
 """
 
 
-def get_onnx_files(repo_path):
+def get_onnx_files_lfs(repo_path: str):
     """
-    Get a list of ONNX files from a Git repository using git lfs ls-files command.
+    Get a list of ONNX files from a Git repository using `git lfs ls-files` command.
 
     Args:
         repo_path (str): Path to the Git repository.
@@ -75,6 +69,18 @@ def get_onnx_files(repo_path):
 
 
 def fetch_files_by_extension(directory: str, extension: str, report_csv: str, columns: List[str]) -> Dict[str, Dict[str, str]]:
+    """
+    Fetch files with a specific extension from a directory, filtered based on a report CSV.
+
+    Args:
+        directory (str): Path to the directory to search for files.
+        extension (str): File extension to filter the files.
+        report_csv (str): Path to the report CSV file.
+        columns (List[str]): List of column names to include in the report.
+
+    Returns:
+        Dict[str, Dict[str, str]]: A dictionary of matched file paths and corresponding mlagility report information.
+    """
     file_dict = report_api.get_dict(report_csv, columns)
     file_dict = {k: v for k, v in file_dict.items() if str(v.get('onnx_exported')).lower() == 'true'}
 
@@ -91,9 +97,26 @@ def fetch_files_by_extension(directory: str, extension: str, report_csv: str, co
 
     return matched_files_dict
 
-onnx_models = get_onnx_files("/net/home/rsivakumar/github/models")
-matched_files_dict = fetch_files_by_extension(python_files_directory, ".py", "assets/data/2023-05-24.csv", ["onnx_exported", "author", "task"])
+# Get the directory path for the Python files in the 'mlagility_models' package
+python_files_directory = pkg_resources.resource_filename('mlagility_models', '')
+
+# Fetch the ONNX model files using the 'get_onnx_files_lfs' function
+onnx_models = get_onnx_files_lfs("/net/home/rsivakumar/github/models")
+
+# Fetch the mlagility models with specific extensions and matching criteria
+mlagility_report_path = "assets/data/2023-05-24.csv"
+python_extension = ".py"
+extract_columns = ["onnx_exported", "author", "task"]
+matched_files_dict = fetch_files_by_extension(
+    python_files_directory,
+    python_extension,
+    mlagility_report_path,
+    extract_columns
+)
+
+# Get a list of Python files from the matched files dictionary
 python_files = list(matched_files_dict.keys())
+
 
 # Load the yaml file
 with open('model-metadata.yaml') as f:
@@ -147,6 +170,15 @@ def onnx_card(model_name, model_url):
     )
 
 def task_to_value(task):
+    """
+    Maps a task name to a corresponding numeric value.
+
+    Args:
+        task (str): The task name.
+
+    Returns:
+        int or None: The mapped numeric value for the task, or None if the task is not found in the mapping.
+    """
     task_value_mapping = {
         "Computer Vision": 1,
         "Natural Language Processing": 2,
@@ -161,6 +193,15 @@ def task_to_value(task):
 
 
 def create_filter_panel(identifier):
+    """
+    Creates a filter panel with tabs for different task options.
+
+    Args:
+        identifier (str): A unique identifier for the filter panel.
+
+    Returns:
+        dbc.Card: The created filter panel.
+    """
     return dbc.Card(
         [
             dbc.Tabs(
@@ -192,7 +233,17 @@ def create_filter_panel(identifier):
         className="filter-panel p-3",
     )
 
+
 def python_file_card(file_name):
+    """
+    Generates a card for a Python file.
+
+    Args:
+        file_name (str): The name of the Python file.
+
+    Returns:
+        dbc.Card: The generated card.
+    """
     file_name_encoded = base64.b64encode(file_name.encode()).decode()
     file_name_only = os.path.basename(file_name)
     use_case = matched_files_dict.get(file_name, {}).get('task', '')
@@ -226,7 +277,7 @@ def python_file_card(file_name):
     return card
 
 
-# Grid of cards
+# Grid of ONNX cards
 grid = dbc.Row(
     [
         dbc.Col(onnx_card(model_name, model_url), lg=4, md=6, xs=12) 
@@ -235,6 +286,7 @@ grid = dbc.Row(
     className="row-cols-1 row-cols-md-2 row-cols-lg-3"
 )
 
+# Grid of model cards
 grid_other_models = dbc.Row(
     [
         dbc.Col(python_file_card(file_name), width=12)
@@ -243,6 +295,7 @@ grid_other_models = dbc.Row(
     className="row-cols-1",
 )
 
+# Page navigation buttons
 page_navigation = html.Div(
     [
         dbc.Button("Prev", id="prev_button", n_clicks=0, className="mr-2 btn btn-primary btn-sm"),
@@ -255,10 +308,9 @@ page_navigation = html.Div(
     className="mt-2"
 )
 
-
-
 # App Layout
 app.layout = html.Div([
+    # Navigation/ title bar
     dbc.NavbarSimple(
         children=[
             dbc.NavbarBrand(
@@ -280,6 +332,7 @@ app.layout = html.Div([
         color="white",
         className="d-flex justify-content-center",
     ),
+    # Tab 1: ONNX Models
     dcc.Tabs(
         id='tabs',
         value='tab-1',
@@ -310,8 +363,9 @@ app.layout = html.Div([
                     ]),
                 ],
             ),
+            # Tab 2: Python Model Cards
             dcc.Tab(
-                label='All others',
+                label='Python Model Cards',
                 value='tab-2',
                 className='custom-tab',
                 selected_className='custom-tab--selected',
@@ -337,6 +391,7 @@ app.layout = html.Div([
                                 html.Div(id="card_container_all_others", children=grid_other_models),
                                 html.Div(page_navigation, style={"display": "flex", "justifyContent": "center"}),
                             ], width=4),
+                            # Code viewer
                             dbc.Col([
                                 html.H4("Code Viewer"),
                                 dash_ace.DashAceEditor(
@@ -356,6 +411,7 @@ app.layout = html.Div([
                                     },
                                     readOnly=True,
                                 ),
+                                # Export steps viewer
                                 html.H4("Steps to export to ONNX"),
                                 dash_ace.DashAceEditor(
                                     id='export_steps',
