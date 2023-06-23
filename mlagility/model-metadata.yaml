@@ -1,752 +1,752 @@
 bertsquad-10.onnx:
   task: "Natural Language Processing"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 bertsquad-12-int8.onnx:
   task: "Natural Language Processing"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 bertsquad-12.onnx:
   task: "Natural Language Processing"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 bertsquad-8.onnx:
   task: "Natural Language Processing"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 bidaf-11-int8.onnx:
   task: "Natural Language Processing"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 bidaf-9.onnx:
   task: "Natural Language Processing"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 gpt2-10.onnx:
   task: "Generative AI"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 gpt2-lm-head-10.onnx:
   task: "Generative AI"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 gpt2-lm-head-bs-12.onnx:
   task: "Generative AI"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 roberta-base-11.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 roberta-sequence-classification-9.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 t5-decoder-with-lm-head-12.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 t5-encoder-12.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 age_googlenet.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 gender_googlenet.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 vgg_ilsvrc_16_age_chalearn_iccv2015.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 vgg_ilsvrc_16_age_imdb_wiki.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 vgg_ilsvrc_16_gender_imdb_wiki.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 arcfaceresnet100-11-int8.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 arcfaceresnet100-8.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 emotion-ferplus-2.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 emotion-ferplus-7.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 emotion-ferplus-8.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 version-RFB-320.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 version-RFB-640.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 bvlcalexnet-12-int8.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 bvlcalexnet-12-qdq.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 bvlcalexnet-12.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 bvlcalexnet-3.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 bvlcalexnet-6.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 bvlcalexnet-7.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 bvlcalexnet-8.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 bvlcalexnet-9.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 caffenet-12-int8.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 caffenet-12-qdq.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 caffenet-12.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 caffenet-3.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 caffenet-6.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 caffenet-7.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 caffenet-8.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 caffenet-9.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 densenet-12-int8.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 densenet-12.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 densenet-3.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 densenet-6.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 densenet-7.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 densenet-8.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 densenet-9.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 efficientnet-lite4-11-int8.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 efficientnet-lite4-11-qdq.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 efficientnet-lite4-11.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 googlenet-12-int8.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 googlenet-12-qdq.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 googlenet-12.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 googlenet-3.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 googlenet-6.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 googlenet-7.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 googlenet-8.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 googlenet-9.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 inception-v1-12-int8.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 inception-v1-12-qdq.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 inception-v1-12.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 inception-v1-3.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 inception-v1-6.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 inception-v1-7.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 inception-v1-8.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 inception-v1-9.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 inception-v2-3.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 inception-v2-6.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 inception-v2-7.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 inception-v2-8.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 inception-v2-9.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 mnist-1.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 mnist-12-int8.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 mnist-12.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 mnist-7.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 mnist-8.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 mobilenetv2-10.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 mobilenetv2-12-int8.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 mobilenetv2-12-qdq.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 mobilenetv2-12.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 mobilenetv2-7.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 rcnn-ilsvrc13-3.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 rcnn-ilsvrc13-6.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 rcnn-ilsvrc13-7.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 rcnn-ilsvrc13-8.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 rcnn-ilsvrc13-9.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 resnet101-v1-7.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 resnet101-v2-7.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 resnet152-v1-7.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 resnet152-v2-7.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 resnet18-v1-7.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 resnet18-v2-7.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 resnet34-v1-7.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 resnet34-v2-7.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 resnet50-caffe2-v1-3.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 resnet50-caffe2-v1-6.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 resnet50-caffe2-v1-7.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 resnet50-caffe2-v1-8.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 resnet50-caffe2-v1-9.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 resnet50-v1-12-int8.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 resnet50-v1-12-qdq.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 resnet50-v1-12.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 resnet50-v1-7.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 resnet50-v2-7.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 resnet-preproc-v1-18.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 shufflenet-3.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 shufflenet-6.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 shufflenet-7.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 shufflenet-8.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 shufflenet-9.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 shufflenet-v2-10.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 shufflenet-v2-12-int8.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 shufflenet-v2-12-qdq.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 shufflenet-v2-12.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 squeezenet1.0-12-int8.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 squeezenet1.0-12.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 squeezenet1.0-13-qdq.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 squeezenet1.0-3.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 squeezenet1.0-6.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 squeezenet1.0-7.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 squeezenet1.0-8.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 squeezenet1.0-9.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 squeezenet1.1-7.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 vgg16-12-int8.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 vgg16-12-qdq.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 vgg16-12.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 vgg16-7.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 vgg16-bn-7.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 vgg19-7.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 vgg19-bn-7.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 vgg19-caffe2-3.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 vgg19-caffe2-6.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 vgg19-caffe2-7.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 vgg19-caffe2-8.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 vgg19-caffe2-9.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 zfnet512-12-int8.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 zfnet512-12-qdq.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 zfnet512-12.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 zfnet512-3.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 zfnet512-6.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 zfnet512-7.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 zfnet512-8.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 zfnet512-9.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 ResNet101-DUC-12-int8.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 ResNet101-DUC-12.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 ResNet101-DUC-7.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 FasterRCNN-10.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 FasterRCNN-12-int8.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 FasterRCNN-12-qdq.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 FasterRCNN-12.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 fcn-resnet101-11.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 fcn-resnet50-11.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 fcn-resnet50-12-int8.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 fcn-resnet50-12-qdq.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 fcn-resnet50-12.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 MaskRCNN-10.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 MaskRCNN-12-int8.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 MaskRCNN-12-qdq.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 MaskRCNN-12.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 retinanet-9.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 ssd_mobilenet_v1_10.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 ssd_mobilenet_v1_12-int8.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 ssd_mobilenet_v1_12.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 ssd_mobilenet_v1_13-qdq.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 ssd-10.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 ssd-12-int8.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 ssd-12-qdq.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 ssd-12.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 tinyyolov2-7.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 tinyyolov2-8.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 tiny-yolov3-11.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 yolov2-coco-9.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 yolov3-10.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 yolov3-12-int8.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 yolov3-12.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 yolov4.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 candy-8.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 candy-9.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 mosaic-8.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 mosaic-9.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 pointilism-8.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 pointilism-9.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 rain-princess-8.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 rain-princess-9.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 udnie-8.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 udnie-9.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
 super-resolution-10.onnx:
   task: "Computer Vision"
-  opset: 19
-  description: "Description for densenet-9.onnx"
+  opset: 16
+  description: "Add description"
