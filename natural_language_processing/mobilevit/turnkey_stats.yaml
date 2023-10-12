@@ -1,0 +1,46 @@
+author: transformers
+builds:
+  x86_ort:
+    all_build_stages:
+    - export_pytorch
+    - optimize_onnx
+    - set_success
+    completed_build_stages:
+      export_pytorch: 1.7656950950622559
+      optimize_onnx: 0.3024749755859375
+      set_success: 0.008271932601928711
+    device_type: x86
+    iterations: 100
+    onnx_file: C:\Users\ramkr/.cache/turnkey\mobilevit_transformers_e7c690dd\onnx\mobilevit_transformers_e7c690dd-op14-opt.onnx
+    runtime: ort
+class: MobileViTModel
+hash: f254ff05
+model_name: mobilevit
+onnx_input_dimensions:
+  pixel_values:
+  - 1
+  - 3
+  - 224
+  - 224
+onnx_model_information:
+  ir_version: 7
+  opset: 14
+  size on disk (KiB): 19336.4668
+onnx_ops_counter:
+  Add: 116
+  Concat: 3
+  Conv: 35
+  Div: 30
+  MatMul: 72
+  Mul: 55
+  Pow: 21
+  ReduceMean: 43
+  Reshape: 54
+  Resize: 2
+  Sigmoid: 34
+  Softmax: 9
+  Sqrt: 21
+  Sub: 21
+  Transpose: 48
+parameters: 4937632
+task: Computer_Vision
